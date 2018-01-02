@@ -17,9 +17,8 @@ struct Pool_conf {
 	int w;
 };
 
-
-
 struct Input_conf {
 	int h;
 	int w;
+	int c;
 };

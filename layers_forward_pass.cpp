@@ -28,14 +28,26 @@ void conv_forward(float ***in, float ***out, void *filter, Conv_conf conv_conf) 
 			}
 		}
 	}
-	// return 0;
-
 }
 
-void pool_forward(void *in, void *out, Input_conf input_conf,Pool_conf pool_conf) {
-
+void pool_forward(void *in, void *out, Input_conf input_conf, Pool_conf pool_conf) {
+	//initialize out if not already initialized
+	for (int h_idx = 0; h_idx < input_conf.h; h_idx++) {
+		for (int w_idx = 0; w_idx < input_conf.w; w_idx++) {
+			for (int c_idx = 0; c_idx < input_conf.c; c_idx) {
+				out[h_idx/pool_conf.h][w_idx/pool_conf.w][c_idx] = 
+					std::max(out[h_idx/pool_conf.h][w_idx/pool_conf.w][c_idx], in[h_idx][w_idx][c_idx]);
+			}
+		}
+	}
 }
 
 void relu_forward(void *in, void *out, Input_conf input_conf) {
-
+	for (int i = 0; i < input_conf.h; i++) {
+		for (int j = 0; j < input_conf.w; j++) {
+			for (int k = 0; k < input_conf.c; k++) {
+				out[i][j][k] = std::max(in[i][j][k], 0);
+			}
+		}
+	}	
 }
