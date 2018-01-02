@@ -1,4 +1,4 @@
-#include "layers.hpp"
+#include <layers.hpp>
 
 void conv_forward(float ***in, float ***out, void *filter, Conv_conf conv_conf) {
 	
