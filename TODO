@@ -1,0 +1,3 @@
+# Next 
+* Make the layer implementations more general
+* Create a memory manager that takes input dimentions and neural network description and automatically allocates and deallocates the layers

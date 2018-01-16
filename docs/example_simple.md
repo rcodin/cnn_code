@@ -16,7 +16,7 @@ Conv3:
 Pool3:
 	2x2
 Fc1:
-	(24x24x256)x256
+	(11x11x256)x512
 Fc2:
 	256x256
 Softmax_loss:
