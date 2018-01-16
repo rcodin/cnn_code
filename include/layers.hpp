@@ -5,10 +5,6 @@
 struct Conv_conf {
 	int h;
 	int w;
-	int in_c;
-	int out_c;
-	int f_h;
-	int f_w;
 };
 
 struct Pool_conf {
@@ -16,7 +12,7 @@ struct Pool_conf {
 	int w;
 };
 
-struct Input_conf {
+struct Data_conf {
 	int h;
 	int w;
 	int c;

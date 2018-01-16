@@ -2,7 +2,7 @@
 #include <cmath>
 
 
-void conv_forward(float ***in, float ***out, float ****filter, Conv_conf conv_conf) {	
+void conv_forward(float ***in, float ***out, float ****filter, Conv_conf conv_conf, Data_conf input_conf, Data_conf output_conf) {	
 	int in_h = conv_conf.h;
 	int in_w = conv_conf.w;
 	int in_c = conv_conf.in_c;
