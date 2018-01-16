@@ -3,9 +3,9 @@
 
 
 void conv_forward(float ***in, float ***out, float ****filter, Conv_conf conv_conf, Data_conf input_conf, Data_conf output_conf) {	
-	int in_h = conv_conf.h;
-	int in_w = conv_conf.w;
-	int in_c = conv_conf.in_c;
+	int in_h = input_conf.h;
+	int in_w = input_conf.w;
+	int in_c = input_conf.c;
 
 	int out_h = conv_conf.h - conv_conf.f_h + 1;
 	int out_w = conv_conf.w - conv_conf.f_w + 1;
@@ -19,9 +19,9 @@ void conv_forward(float ***in, float ***out, float ****filter, Conv_conf conv_co
 				
 				// std::cout<<conv_conf.h<<conv_conf.w<<conv_conf.in_c<<std::endl;
 				float elem = 0.0f;
-				for (int i = 0; i < conv_conf.f_h; i++) {
-					for (int j = 0; j < conv_conf.f_w; j++) {
-						for (int k = 0; k < conv_conf.in_c; k++) {
+				for (int i = 0; i < conv_conf.h; i++) {
+					for (int j = 0; j < conv_conf.w; j++) {
+						for (int k = 0; k < in_c; k++) {
 							
 							elem += in[h_idx + i][w_idx + j][k] * filter[i][j][k][c_idx];
 						}
