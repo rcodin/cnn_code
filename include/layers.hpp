@@ -26,8 +26,15 @@ enum Layer_type {
 	no_imp
 };
 
-void conv_forward(float ***in, float ***out, float ****filter, Conv_conf conv_conf);
-void pool_forward(float ***in, float ***out, Input_conf input_conf, Pool_conf pool_conf);
-void relu_forward(float ***in, float ***out, Input_conf input_conf);
-void linearize_conv(float ***in, float *out, float **filter, Input_conf input_conf, Input_conf output_conf);
-void fc_forward(float *in, float *out, float **filter,int input_size, int output_size);
+void conv_forward(float ***in, float ***out, float ****filter, 
+					Conv_conf conv_conf, Data_conf input_conf, Data_conf output_conf);
+
+void pool_forward(float ***in, float ***out, Data_conf input_conf,
+					Pool_conf pool_conf);
+
+void relu_forward(float ***in, float ***out, Data_conf input_conf);
+
+void linearize_conv(float ***in, float *out, float **filter, 
+			Data_conf input_conf, Data_conf output_conf);
+void fc_forward(float *in, float *out, float **filter, int input_size, 
+			int output_size);

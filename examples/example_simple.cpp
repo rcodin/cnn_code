@@ -73,121 +73,86 @@ int main()
 	//conv1->relu->pool
 
 	//Conv1
-
-
-	Input_conf input11_conf;
-	input_conf.h = 222;
-	input_conf.w = 222;
-	input_conf.c = 64;
-
-	Input_conf input12_conf;
-
-	Input_conf input13_conf;
-	struct Conv_conf conv1_conf;
-
-	conv1_conf.h = 224;
-	conv1_conf.w = 224;
-	conv1_conf.in_c = 3;
-	conv1_conf.out_c = 64;
-	conv1_conf.f_h = 3;
-	conv1_conf.f_w = 3;
-
-
-	struct Conv_conf conv2_conf;
-
-	conv2_conf.h = 74;
-	conv2_conf.w = 74;
-	conv2_conf.in_c = 64;
-	conv2_conf.out_c = 128;
-	conv2_conf.f_h = 3;
-	conv2_conf.f_w = 3;
-
-	struct Conv_conf conv3_conf;
-
-	conv3_conf.h = 24;
-	conv3_conf.w = 24;
-	conv3_conf.in_c = 128;
-	conv3_conf.out_c = 256;
-	conv3_conf.f_h = 3;
-	conv3_conf.f_w = 3;
+	Conv_conf conv1_conf = {3, 3};
 	
-	float ***input = (float ***)alloc_3D(224, 224, 3, bytes);
-	// float input[60][60][3];
-	float ***output = (float ***)alloc_3D(222, 222, 64, bytes);
-	// float output[58][58][3];
-	// for (int i = 0; i < 100000000; i++)
+	Data_conf input11_conf = {224, 224, 3};
+	Data_conf output11_conf = {222, 222, 64};
 
-	conv_forward(input, output, conv1_filter, conv1_conf);
+	//relu1
+	Data_conf input12_conf = {222, 222, 64};
+	Data_conf output12_conf = {222, 222, 64};
 
-	relu_forward(output, output, input_conf);
+	//pool1
+	Data_conf input13_conf = {222, 222, 64};
+	Data_conf output13_conf = {74, 74, 64};
+	Pool_conf pool1_conf = {3, 3};
+	
+	//Conv2
+	struct Conv_conf conv2_conf = {3, 3};
+	Data_conf input21_conf = {74, 74, 64};
+	Data_conf output21_conf = {72, 72, 128};
 
+	//relu2
+	Data_conf input22_conf = {72, 72, 128};
+	Data_conf output22_conf = {72, 72, 128};
+
+	//pool2
+	Data_conf input23_conf = {72, 72, 128};	
+	Data_conf output23_conf = {24, 24, 128};
+	Pool_conf pool2_conf = {3, 3};
+
+	struct Conv_conf conv3_conf = {3, 3};
+	//Conv3	
+	Data_conf input31_conf = {24, 24, 128};
+	Data_conf output31_conf = {22, 22, 256};
+
+	//relu3
+	Data_conf input32_conf = {22, 22, 256};
+	Data_conf output32_conf = {22, 22, 256};
+
+
+	//pool3
+	Data_conf input33_conf = {22, 22, 256};
+	Data_conf output33_conf = {11, 11, 256};
+	Pool_conf pool3_conf = {2, 2};
+
+
+	//conv1->relu->pool
+	float ***input = (float ***)alloc_3D(input11_conf.h, input11_conf.h, input11_conf.c, bytes);
+	float ***output = (float ***)alloc_3D(output11_conf.h, output11_conf.h, output11_conf.c, bytes);
+	conv_forward(input, output, conv1_filter, conv1_conf, input11_conf, output11_conf);
+	relu_forward(output, output, input12_conf);
 	free_mem(input);
-	// free_mem(output);
 	input = output;
-	output = (float ***)alloc_3D(74, 74, 64, bytes);
-
-	Pool_conf pool1_conf;
+	output = (float ***)alloc_3D(output13_conf.h, output13_conf.w, output13_conf.c, bytes);
+	pool_forward(input, output, input12_conf, pool1_conf);
 	
-	pool1_conf.h = 3;
-	pool1_conf.w = 3;
-	
-	pool_forward(input, output, input_conf, pool1_conf);
-
 
 	//conv2->relu->pool
-
-
-
 	free_mem(input);
 	input = output;
-	output = (float ***)alloc_3D(72, 72, 128, bytes);
-	conv_forward(input, output, conv2_filter, conv2_conf);
-
-	input_conf.h = 72;
-	input_conf.w = 72;
-	input_conf.c = 128;
-	relu_forward(output, output, input_conf);
-
+	output = (float ***)alloc_3D(output21_conf.h, output21_conf.w, output21_conf.c, bytes);
+	conv_forward(input, output, conv2_filter, conv2_conf, input21_conf, output21_conf);
+	relu_forward(output, output, input22_conf);
 	free_mem(input);
 	input = output;
-	output = (float ***)alloc_3D(24, 24, 128, bytes);
-
-	Pool_conf pool2_conf;
+	output = (float ***)alloc_3D(output23_conf.h, output23_conf.w, output23_conf.c, bytes);
+	pool_forward(input, output, input23_conf, pool2_conf);
 	
-	pool2_conf.h = 3;
-	pool2_conf.w = 3;
-	pool_forward(input, output, input_conf, pool2_conf);
-
-
-	// pool_forward();
-	
-
 	//conv3->relu->pool
-
-
 	free_mem(input);
 	input = output;
-	output = (float ***)alloc_3D(24, 24, 256, bytes);
-	conv_forward(input, output, conv3_filter, conv3_conf);
-
-	input_conf.h = 22;
-	input_conf.w = 22;
-	input_conf.c = 256;
-	relu_forward(output, output, input_conf);
-
+	output = (float ***)alloc_3D(output31_conf.h, output31_conf.w, output31_conf.c, bytes);
+	conv_forward(input, output, conv3_filter, conv3_conf, input31_conf, output31_conf);
+	relu_forward(output, output, input32_conf);
 	free_mem(input);
 	input = output;
-	output = (float ***)alloc_3D(11, 11, 256, bytes);
-
-	Pool_conf pool3_conf;
-	
-	pool3_conf.h = 2;
-	pool3_conf.w = 2;
-	pool_forward(input, output, input_conf, pool3_conf);
-
+	output = (float ***)alloc_3D(output33_conf.h, output33_conf.w, output33_conf.c, bytes);
+	pool_forward(input, output, input33_conf, pool3_conf);
 
 	//fc1
-	Input_conf output_conf;
+	Data_conf input_conf;
+	Data_conf output_conf;
 	free_mem(input);
 	input = output;
 	float *fc_output = (float *)malloc(512 * bytes);
