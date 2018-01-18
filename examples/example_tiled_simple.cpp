@@ -1,3 +1,9 @@
+/*
+Neural Network with 2 tiled and fused layers
+*/
+
+
+
 #include <stdio.h>
 #include <cstdlib>
 #include <stdint.h>
@@ -10,7 +16,7 @@ void *alloc_2D(int i, int j, size_t bytes) {
 
 	for (int i_idx = 0; i_idx < i; i_idx++)
 		ret[i_idx] = malloc(j * bytes);
-	return ret;
+	return ret;	
 }
 
 void *alloc_3D(int i, int j, int k, size_t bytes) {
