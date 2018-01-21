@@ -1,8 +1,8 @@
 #include <layers.hpp>
 #include <cmath>
+#include <tiling.hpp>
 
-
-void conv_forward(float ***in, float ***out, float ****filter, Conv_conf conv_conf, 
+void conv_forward_tiled(float ***in, float ***out, float ****filter, Conv_conf conv_conf, 
 					Data_conf input_conf, Data_conf output_conf, tile_idx_conf tile_conf) {	
 	int in_h = input_conf.h;
 	int in_w = input_conf.w;
@@ -13,9 +13,9 @@ void conv_forward(float ***in, float ***out, float ****filter, Conv_conf conv_co
 	int out_c = output_conf.c;
 
 	//whole convolution layer
-	for (int h_idx = 0; h_idx < out_h; h_idx++) {
-		for (int w_idx = 0; w_idx < out_w; w_idx++) {
-			for (int c_idx = 0; c_idx < out_c; c_idx++) {
+	for (int h_idx = tile_conf.h_base_idx; h_idx < (tile_conf.h_base_idx + out_h); h_idx++) {
+		for (int w_idx = tile_conf.w_base_idx; w_idx < (tile_conf.w_base_idx + out_w); w_idx++) {
+			for (int c_idx = tile_conf.c_base_idx; c_idx < (tile_conf.c_base_idx + out_c); c_idx++) {
 				//for each output point
 				
 				// std::cout<<conv_conf.h<<conv_conf.w<<conv_conf.in_c<<std::endl;
@@ -34,11 +34,12 @@ void conv_forward(float ***in, float ***out, float ****filter, Conv_conf conv_co
 	std::cout<<"mult"<<std::endl;
 }
 
-void pool_forward(float ***in, float ***out, Data_conf input_conf, Pool_conf pool_conf) {
+void pool_forward_tiled(float ***in, float ***out, Data_conf input_conf, Pool_conf pool_conf,
+					tile_idx_conf tile_conf) {
 	//initialize out if not already initialized
-	for (int h_idx = 0; h_idx < input_conf.h; h_idx++) {
-		for (int w_idx = 0; w_idx < input_conf.w; w_idx++) {
-			for (int c_idx = 0; c_idx < input_conf.c; c_idx++) {
+	for (int h_idx = tile_conf.h_base_idx; h_idx < (tile_conf.h_base_idx + input_conf.h); h_idx++) {
+		for (int w_idx = tile_conf.w_base_idx; w_idx < (tile_conf.w_base_idx + input_conf.w); w_idx++) {
+			for (int c_idx = tile_conf.c_base_idx; c_idx < (tile_conf.c_base_idx + input_conf.c); c_idx++) {
 				// std::cout<<"pool"<<std::endl;
 				out[h_idx/pool_conf.h][w_idx/pool_conf.w][c_idx] = 
 					std::fmax(out[h_idx/pool_conf.h][w_idx/pool_conf.w][c_idx], in[h_idx][w_idx][c_idx]);
@@ -48,40 +49,14 @@ void pool_forward(float ***in, float ***out, Data_conf input_conf, Pool_conf poo
 
 }
 
-void relu_forward(float ***in, float ***out, Data_conf input_conf) {
-	for (int i = 0; i < input_conf.h; i++) {
-		for (int j = 0; j < input_conf.w; j++) {
-			for (int k = 0; k < input_conf.c; k++) {
+void relu_forward_tiled(float ***in, float ***out, Data_conf input_conf,
+					tile_idx_conf tile_conf) {
+	for (int i = tile_conf.h_base_idx; i < (tile_conf.h_base_idx + input_conf.h); i++) {
+		for (int j = tile_conf.w_base_idx; j < (tile_conf.w_base_idx + input_conf.w); j++) {
+			for (int k = 0; k < (tile_conf.c_base_idx + input_conf.c); k++) {
 				// std::cout<<"relu"<<std::endl;
 				out[i][j][k] = std::fmax(in[i][j][k], 0);
 			}
 		}
 	}	
-}
-
-void linearize_conv(float ***in, float *out, float **filter, Data_conf input_conf, Data_conf output_conf) {
-	int out_size = output_conf.h;
-	int i_mult = input_conf.w * input_conf.c;
-	int j_mult = input_conf.c;
-
-	for (int out_idx = 0; out_idx < out_size; out_idx++) {
-		float out_elem = 0.0f;
-		for (int i = 0; i < input_conf.h; i++) {
-			for (int j = 0; j < input_conf.w; j++) {
-				for (int k = 0; k < input_conf.c; k++) {
-					out_elem += in[i][j][k] * filter[out_idx][i * i_mult + j * j_mult + k];	
-				}
-			}
-		}
-		out[out_idx] = out_elem;
-	}
-}
-
-void fc_forward(float *in, float *out, float **filter,int input_size, int output_size) {
-	for (int i = 0; i < input_size; i++) {
-		for (int j = 0; j < output_size; j++) {
-			std::cout<<"fc2"<<std::endl;
-			out[j] = in[i] * filter[i][j];
-		}
-	}
 }

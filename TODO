@@ -1,3 +1,4 @@
-# Next 
+#Next 
 * Make the layer implementations more general
 * Create a memory manager that takes input dimentions and neural network description and automatically allocates and deallocates the layers
+* Make a module which calculates the tiled input and output sizes for each layer based on last fused layer

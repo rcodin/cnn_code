@@ -2,8 +2,6 @@
 Neural Network with 2 tiled and fused layers
 */
 
-
-
 #include <stdio.h>
 #include <cstdlib>
 #include <stdint.h>
@@ -79,6 +77,7 @@ int main()
 	//conv1->relu->pool
 
 	//Conv1
+	tile_idx_conf 
 	Conv_conf conv1_conf = {3, 3};
 	
 	Data_conf input11_conf = {224, 224, 3};
@@ -123,27 +122,33 @@ int main()
 	Pool_conf pool3_conf = {2, 2};
 
 
-	//conv1->relu->pool
-	float ***input = (float ***)alloc_3D(input11_conf.h, input11_conf.h, input11_conf.c, bytes);
-	float ***output = (float ***)alloc_3D(output11_conf.h, output11_conf.h, output11_conf.c, bytes);
-	conv_forward(input, output, conv1_filter, conv1_conf, input11_conf, output11_conf);
-	relu_forward(output, output, input12_conf);
-	free_mem(input);
-	input = output;
-	output = (float ***)alloc_3D(output13_conf.h, output13_conf.w, output13_conf.c, bytes);
-	pool_forward(input, output, input12_conf, pool1_conf);
-	
+	for (int h_tile = 0; h_tile < (24/12); h_tile ++) {
+		for (int w_tile = 0; h_tile < (24/12); h_tile ++) {
+			//conv1->relu->pool
 
-	//conv2->relu->pool
-	free_mem(input);
-	input = output;
-	output = (float ***)alloc_3D(output21_conf.h, output21_conf.w, output21_conf.c, bytes);
-	conv_forward(input, output, conv2_filter, conv2_conf, input21_conf, output21_conf);
-	relu_forward(output, output, input22_conf);
-	free_mem(input);
-	input = output;
-	output = (float ***)alloc_3D(output23_conf.h, output23_conf.w, output23_conf.c, bytes);
-	pool_forward(input, output, input23_conf, pool2_conf);
+			float ***input = (float ***)alloc_3D(input11_conf.h, input11_conf.h, input11_conf.c, bytes);
+			float ***output = (float ***)alloc_3D(output11_conf.h, output11_conf.h, output11_conf.c, bytes);
+			conv_forward(input, output, conv1_filter, conv1_conf, input11_conf, output11_conf);
+			relu_forward(output, output, input12_conf);
+			free_mem(input);
+			input = output;
+			output = (float ***)alloc_3D(output13_conf.h, output13_conf.w, output13_conf.c, bytes);
+			pool_forward(input, output, input12_conf, pool1_conf);
+			
+
+			//conv2->relu->pool
+			free_mem(input);
+			input = output;
+			output = (float ***)alloc_3D(output21_conf.h, output21_conf.w, output21_conf.c, bytes);
+			conv_forward(input, output, conv2_filter, conv2_conf, input21_conf, output21_conf);
+			relu_forward(output, output, input22_conf);
+			free_mem(input);
+			input = output;
+			output = (float ***)alloc_3D(output23_conf.h, output23_conf.w, output23_conf.c, bytes);
+			pool_forward(input, output, input23_conf, pool2_conf);
+					
+		}
+	}
 	
 	//conv3->relu->pool
 	free_mem(input);
