@@ -146,8 +146,29 @@ int main()
 			Data_conf output22_tiled_conf = {36, 36, 128};
 
 			Data_conf input23_tiled_conf = {36, 36, 128};
-			Data_conf output23_tiled_conf = {11, 11, 256};
+			Data_conf output23_tiled_conf = {12, 12, 128};
+			
+			tile_idx_conf input11_tile_conf. input12_tile_conf, input13_tile_conf, input21_tile_conf, input22_tile_conf, input23_tiled_conf;
+			tile_idx_conf output11_tile_conf. output12_tile_conf, output13_tile_conf, output21_tile_conf, output22_tile_conf, output23_tiled_conf;
 
+			input11_tile_conf = {input22_tile_conf.h_base_idx + conv2_conf.h - 1, input22_tile_conf.w_base_idx + conv2_conf.w - 1, input21_tiled_conf.c};
+			output11_tile_conf = {input21_tile_conf.h_base_idx, input21_tile_conf.w_base_idx, input21_tile_conf.c_base_idx};
+
+			input12_tile_conf = {input22_tile_conf.h_base_idx + conv2_conf.h - 1, input22_tile_conf.w_base_idx + conv2_conf.w - 1, input21_tiled_conf.c};
+			output12_tile_conf = {input13_tile_conf.h_base_idx, input13_tile_conf.w_base_idx, input13_tile_conf.c_base_idx};
+
+			input13_tile_conf = {output13_tile_conf.h_base_idx, output13_tile_conf.w_base_idx, output13_tile_conf.c_base_idx};
+			output13_tile_conf = {input21_tile_conf.h_base_idx, input21_tile_conf.w_base_idx, input21_tile_conf.c_base_idx};
+
+			input21_tile_conf = {output21_tile_conf.h_base_idx + conv2_conf.h - 1, output21_tile_conf.w_base_idx + conv2_conf.w - 1, input21_tiled_conf.c};
+			output21_tile_conf = {input22_tile_conf.h_base_idx, input22_tile_conf.w_base_idx, input22_tile_conf.c_base_idx};
+
+			input22_tile_conf = {h_tile * input22_conf.h, w_tile * input22_conf.w, input22_tiled_conf.c};
+			output22_tile_conf = {h_tile * output22_conf.h, w_tile * output22_conf.w, output22_tiled_conf.c};
+
+			input23_tile_conf = {h_tile * input23_conf.h, w_tile * input23_conf.w, input23_tiled_conf.c};
+			output23_tile_conf = {h_tile * output23_conf.h, w_tile * output23_conf.w, output23_tiled_conf.c};
+			
 			float ***input = (float ***)alloc_3D(input11_conf.h, input11_conf.h, input11_conf.c, bytes);
 			float ***output = (float ***)alloc_3D(output11_conf.h, output11_conf.h, output11_conf.c, bytes);
 			conv_forward(input, output, conv1_filter, conv1_conf, input11_conf, output11_conf);
