@@ -113,7 +113,7 @@ int main()
 
 	//relu3
 	Data_conf input32_conf = {22, 22, 256};
-	Data_conf output32_conf = {22, 22, 256};
+	Data_conf output32_conf  = {22, 22, 256};
 
 
 	//pool3
@@ -123,8 +123,30 @@ int main()
 
 
 	for (int h_tile = 0; h_tile < (24/12); h_tile ++) {
-		for (int w_tile = 0; h_tile < (24/12); h_tile ++) {
+		for (int w_tile = 0; w_tile < (24/12); w_tile ++) {
 			//conv1->relu->pool
+
+			Data_conf input11_tiled_conf = {116, 116, 3};
+			Data_conf output11_tiled_conf = {114, 114, 64};
+
+			tile_idx_conf input11_tile_conf = {h_tile, w_tile, input11_tiled_conf.c};
+			tile_idx_conf output11_tile_conf = {h_tile, w_tile, output11_tiled_conf.c};
+
+			Data_conf input12_tiled_conf = {114, 114, 64};
+			Data_conf output_tiled_conf = {114, 114, 64};
+
+			Data_conf input13_tiled_conf = {124, 124, 64};
+			Data_conf output13_tiled_conf = {38, 38, 64};
+
+
+			Data_conf input21_tiled_conf = {38, 38, 64};
+			Data_conf output21_tiled_conf = {36, 36, 128};
+
+			Data_conf input22_tiled_conf = {36, 36, 128};
+			Data_conf output22_tiled_conf = {36, 36, 128};
+
+			Data_conf input23_tiled_conf = {36, 36, 128};
+			Data_conf output23_tiled_conf = {11, 11, 256};
 
 			float ***input = (float ***)alloc_3D(input11_conf.h, input11_conf.h, input11_conf.c, bytes);
 			float ***output = (float ***)alloc_3D(output11_conf.h, output11_conf.h, output11_conf.c, bytes);

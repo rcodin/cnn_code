@@ -3,7 +3,7 @@
 #include <tiling.hpp>
 
 void conv_forward_tiled(float ***in, float ***out, float ****filter, Conv_conf conv_conf, 
-					Data_conf input_conf, Data_conf output_conf, tile_idx_conf tile_conf) {	
+					Data_conf input_conf, Data_conf output_conf, tile_idx_conf input_tile_conf, tile_idx_conf ouptut_tile_conf) {	
 	int in_h = input_conf.h;
 	int in_w = input_conf.w;
 	int in_c = input_conf.c;
@@ -13,21 +13,26 @@ void conv_forward_tiled(float ***in, float ***out, float ****filter, Conv_conf c
 	int out_c = output_conf.c;
 
 	//whole convolution layer
-	for (int h_idx = tile_conf.h_base_idx; h_idx < (tile_conf.h_base_idx + out_h); h_idx++) {
-		for (int w_idx = tile_conf.w_base_idx; w_idx < (tile_conf.w_base_idx + out_w); w_idx++) {
-			for (int c_idx = tile_conf.c_base_idx; c_idx < (tile_conf.c_base_idx + out_c); c_idx++) {
+	for (int h_idx = 0; h_idx <  out_h; h_idx++) {
+		for (int w_idx = 0; w_idx < out_w; w_idx++) {
+			for (int c_idx = 0; c_idx < out_c; c_idx++) {
 				//for each output point
+				int h_in_idx = input_tile_conf.h_base_idx + h_idx;
+				int w_in_idx = input_tile_conf.w_base_idx + w_idx; 
+
+				int h_out_idx = ouptut_tile_conf.h_base_idx + h_idx;
+				int w_out_idx = ouptut_tile_conf.w_base_idx + w_idx;
 				
 				// std::cout<<conv_conf.h<<conv_conf.w<<conv_conf.in_c<<std::endl;
 				float elem = 0.0f;
 				for (int i = 0; i < conv_conf.h; i++) {
 					for (int j = 0; j < conv_conf.w; j++) {
 						for (int k = 0; k < in_c; k++) {	
-							elem += in[h_idx + i][w_idx + j][k] * filter[i][j][k][c_idx];
+							elem += in[h_in_idx + i][w_in_idx + j][k] * filter[i][j][k][c_idx];
 						}
 					}
 				}
-				out[h_idx][w_idx][c_idx] = elem;
+				out[h_out_idx][w_out_idx][c_idx] = elem;
 			}
 		}
 	}
@@ -35,14 +40,20 @@ void conv_forward_tiled(float ***in, float ***out, float ****filter, Conv_conf c
 }
 
 void pool_forward_tiled(float ***in, float ***out, Data_conf input_conf, Pool_conf pool_conf,
-					tile_idx_conf tile_conf) {
+					tile_idx_conf input_tile_conf, tile_idx_conf output_tile_conf) {
 	//initialize out if not already initialized
-	for (int h_idx = tile_conf.h_base_idx; h_idx < (tile_conf.h_base_idx + input_conf.h); h_idx++) {
-		for (int w_idx = tile_conf.w_base_idx; w_idx < (tile_conf.w_base_idx + input_conf.w); w_idx++) {
-			for (int c_idx = tile_conf.c_base_idx; c_idx < (tile_conf.c_base_idx + input_conf.c); c_idx++) {
+	for (int h_idx = 0; h_idx < (input_conf.h); h_idx++) {
+		for (int w_idx = 0; w_idx < (input_conf.w); w_idx++) {
+			for (int c_idx = 0; c_idx < (input_conf.c); c_idx++) {
 				// std::cout<<"pool"<<std::endl;
-				out[h_idx/pool_conf.h][w_idx/pool_conf.w][c_idx] = 
-					std::fmax(out[h_idx/pool_conf.h][w_idx/pool_conf.w][c_idx], in[h_idx][w_idx][c_idx]);
+				int h_in_idx = input_tile_conf.h_base_idx + h_idx;
+				int w_in_idx = input_tile_conf.w_base_idx + w_idx; 
+
+				int h_out_idx = output_tile_conf.h_base_idx + h_idx/pool_conf.h;
+				int w_out_idx = output_tile_conf.w_base_idx + w_idx/pool_conf.h;
+
+				out[h_out_idx][w_out_idx][c_idx] = 
+					std::fmax(out[h_out_idx][w_out_idx][c_idx], in[h_in_idx][w_in_idx][c_idx]);
 			}
 		}
 	}
@@ -50,12 +61,19 @@ void pool_forward_tiled(float ***in, float ***out, Data_conf input_conf, Pool_co
 }
 
 void relu_forward_tiled(float ***in, float ***out, Data_conf input_conf,
-					tile_idx_conf tile_conf) {
-	for (int i = tile_conf.h_base_idx; i < (tile_conf.h_base_idx + input_conf.h); i++) {
-		for (int j = tile_conf.w_base_idx; j < (tile_conf.w_base_idx + input_conf.w); j++) {
-			for (int k = 0; k < (tile_conf.c_base_idx + input_conf.c); k++) {
+					tile_idx_conf input_tile_conf, tile_idx_conf output_tile_conf) {
+	for (int h_idx = 0; h_idx < (input_conf.h); h_idx++) {
+		for (int w_idx = 0; w_idx < (input_conf.w); w_idx++) {
+			for (int c_idx = 0; c_idx < (input_conf.c); c_idx++) {
+
+				int h_in_idx = input_tile_conf.h_base_idx + h_idx;
+				int w_in_idx = input_tile_conf.w_base_idx + w_idx; 
+
+				int h_out_idx = output_tile_conf.h_base_idx + h_idx;
+				int w_out_idx = output_tile_conf.w_base_idx + w_idx;
+
 				// std::cout<<"relu"<<std::endl;
-				out[i][j][k] = std::fmax(in[i][j][k], 0);
+				out[h_out_idx][w_out_idx][c_idx] = std::fmax(in[h_in_idx][w_in_idx][c_idx], 0);
 			}
 		}
 	}	
