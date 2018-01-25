@@ -6,6 +6,7 @@ Neural Network with 2 tiled and fused layers
 #include <cstdlib>
 #include <stdint.h>
 #include <layers.hpp>
+#include <tiling.hpp>
 
 using namespace std;
 
@@ -77,7 +78,6 @@ int main()
 	//conv1->relu->pool
 
 	//Conv1
-	tile_idx_conf 
 	Conv_conf conv1_conf = {3, 3};
 	
 	Data_conf input11_conf = {224, 224, 3};
@@ -129,9 +129,6 @@ int main()
 			Data_conf input11_tiled_conf = {116, 116, 3};
 			Data_conf output11_tiled_conf = {114, 114, 64};
 
-			tile_idx_conf input11_tile_conf = {h_tile, w_tile, input11_tiled_conf.c};
-			tile_idx_conf output11_tile_conf = {h_tile, w_tile, output11_tiled_conf.c};
-
 			Data_conf input12_tiled_conf = {114, 114, 64};
 			Data_conf output_tiled_conf = {114, 114, 64};
 
@@ -147,27 +144,27 @@ int main()
 
 			Data_conf input23_tiled_conf = {36, 36, 128};
 			Data_conf output23_tiled_conf = {12, 12, 128};
+
+			tile_idx_conf input11_tile_conf, input12_tile_conf, input13_tile_conf, input21_tile_conf, input22_tile_conf, input23_tile_conf;
+			tile_idx_conf output11_tile_conf, output12_tile_conf, output13_tile_conf, output21_tile_conf, output22_tile_conf, output23_tile_conf;
 			
-			tile_idx_conf input11_tile_conf. input12_tile_conf, input13_tile_conf, input21_tile_conf, input22_tile_conf, input23_tiled_conf;
-			tile_idx_conf output11_tile_conf. output12_tile_conf, output13_tile_conf, output21_tile_conf, output22_tile_conf, output23_tiled_conf;
+			output23_tile_conf = {output23_conf.h, output23_conf.w, output23_tiled_conf.c};
+			input23_tile_conf = {input23_conf.h, input23_conf.w, input23_tiled_conf.c};
 
-			input11_tile_conf = {input22_tile_conf.h_base_idx + conv2_conf.h - 1, input22_tile_conf.w_base_idx + conv2_conf.w - 1, input21_tiled_conf.c};
-			output11_tile_conf = {input21_tile_conf.h_base_idx, input21_tile_conf.w_base_idx, input21_tile_conf.c_base_idx};
+			output22_tile_conf = {output22_tiled_conf.h, output22_tiled_conf.w, output22_tiled_tiled_conf.c};
+			input22_tile_conf = {input22_tiled_conf.h, input22_tiled_conf.w, input22_tiled_conf.c};
 
-			input12_tile_conf = {input22_tile_conf.h_base_idx + conv2_conf.h - 1, input22_tile_conf.w_base_idx + conv2_conf.w - 1, input21_tiled_conf.c};
-			output12_tile_conf = {input13_tile_conf.h_base_idx, input13_tile_conf.w_base_idx, input13_tile_conf.c_base_idx};
-
-			input13_tile_conf = {output13_tile_conf.h_base_idx, output13_tile_conf.w_base_idx, output13_tile_conf.c_base_idx};
-			output13_tile_conf = {input21_tile_conf.h_base_idx, input21_tile_conf.w_base_idx, input21_tile_conf.c_base_idx};
-
-			input21_tile_conf = {output21_tile_conf.h_base_idx + conv2_conf.h - 1, output21_tile_conf.w_base_idx + conv2_conf.w - 1, input21_tiled_conf.c};
 			output21_tile_conf = {input22_tile_conf.h_base_idx, input22_tile_conf.w_base_idx, input22_tile_conf.c_base_idx};
+			input21_tile_conf = {output21_tile_conf.h_base_idx, output21_tile_conf.w_base_idx, input21_tiled_conf.c};
 
-			input22_tile_conf = {h_tile * input22_conf.h, w_tile * input22_conf.w, input22_tiled_conf.c};
-			output22_tile_conf = {h_tile * output22_conf.h, w_tile * output22_conf.w, output22_tiled_conf.c};
+			output13_tile_conf = {input21_tile_conf.h_base_idx, input21_tile_conf.w_base_idx, input21_tile_conf.c_base_idx};			
+			input13_tile_conf = {output13_tile_conf.h_base_idx * pool2_conf.h, output13_tile_conf.w_base_idx * pool2_conf.w, output13_tile_conf.c_base_idx};
 
-			input23_tile_conf = {h_tile * input23_conf.h, w_tile * input23_conf.w, input23_tiled_conf.c};
-			output23_tile_conf = {h_tile * output23_conf.h, w_tile * output23_conf.w, output23_tiled_conf.c};
+			output12_tile_conf = {input13_tile_conf.h_base_idx, input13_tile_conf.w_base_idx, input13_tile_conf.c_base_idx};
+			input12_tile_conf = {output12_tile_conf.h_base_idx, output12_tile_conf.h_base_idx, output12_tile_conf.h_base_idx};
+
+			output11_tile_conf = {input12_tile_conf.h_base_idx, input12_tile_conf.w_base_idx, input12_tile_conf.c_base_idx};
+			input11_tile_conf = {output11_tile_conf.h, output11_tile_conf.w, input21_tiled_conf.c};
 			
 			float ***input = (float ***)alloc_3D(input11_conf.h, input11_conf.h, input11_conf.c, bytes);
 			float ***output = (float ***)alloc_3D(output11_conf.h, output11_conf.h, output11_conf.c, bytes);
