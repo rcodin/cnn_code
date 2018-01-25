@@ -11,4 +11,4 @@ all: $(program_NAME)
 
 $(program_NAME): $(SRCS) 
 	g++ -fPIC -I$(INCLUDE_DIR) $(CFLAGS) -O -c $(SRCS)
-	g++ -shared -o libcnn.so blas.o layers_forward_pass.o -lm
+	g++ -shared -o libcnn.so blas.o layers_forward_pass.o layers_tiled_forward_pass.o -lm

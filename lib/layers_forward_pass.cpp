@@ -30,7 +30,7 @@ void conv_forward(float ***in, float ***out, float ****filter, Conv_conf conv_co
 			}
 		}
 	}
-	std::cout<<"mult"<<std::endl;
+	std::cout<<"conv"<<std::endl;
 }
 
 void pool_forward(float ***in, float ***out, Data_conf input_conf, Pool_conf pool_conf) {
@@ -44,7 +44,7 @@ void pool_forward(float ***in, float ***out, Data_conf input_conf, Pool_conf poo
 			}
 		}
 	}
-
+	std::cout<<"pool"<<std::endl;
 }
 
 void relu_forward(float ***in, float ***out, Data_conf input_conf) {
@@ -55,7 +55,8 @@ void relu_forward(float ***in, float ***out, Data_conf input_conf) {
 				out[i][j][k] = std::fmax(in[i][j][k], 0);
 			}
 		}
-	}	
+	}
+	std::cout<<"relu"<<std::endl;
 }
 
 void linearize_conv(float ***in, float *out, float **filter, Data_conf input_conf, Data_conf output_conf) {
@@ -74,13 +75,15 @@ void linearize_conv(float ***in, float *out, float **filter, Data_conf input_con
 		}
 		out[out_idx] = out_elem;
 	}
+	std::cout<<"fc1"<<std::endl;
 }
 
 void fc_forward(float *in, float *out, float **filter,int input_size, int output_size) {
 	for (int i = 0; i < input_size; i++) {
 		for (int j = 0; j < output_size; j++) {
-			std::cout<<"fc2"<<std::endl;
+			// std::cout<<"fc2"<<std::endl;
 			out[j] = in[i] * filter[i][j];
 		}
 	}
+	std::cout<<"fc2"<<std::endl;
 }
