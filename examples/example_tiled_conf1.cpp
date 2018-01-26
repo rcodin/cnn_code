@@ -66,10 +66,10 @@ int main()
 
 	//load network weights
 	size_t bytes = sizeof(float);
-	float ****conv1_filter = (float ****)alloc_4D(3, 3, 3, 64, bytes);
+	float ****conv1_filter = (float ****)alloc_4D(3, 3, 3, 3, bytes);
 
 	// float conv1_filter[3][3][3][3];
-	float ****conv2_filter = (float ****)alloc_4D(3, 3, 64, 128, bytes);
+	float ****conv2_filter = (float ****)alloc_4D(3, 3, 3, 128, bytes);
 	float ****conv3_filter = (float ****)alloc_4D(3, 3, 128, 256, bytes);
 	float **fc1_filter = (float **)alloc_2D(11*11*256, 512, bytes);
 	float **fc2_filter = (float **)alloc_2D(512, 512, bytes);
@@ -81,15 +81,15 @@ int main()
 	Conv_conf conv1_conf = {3, 3};
 	
 	Data_conf input11_conf = {998, 998, 3};
-	Data_conf output11_conf = {996, 996, 64};
+	Data_conf output11_conf = {996, 996, 3};
 
 	//relu1
-	Data_conf input12_conf = {996, 996, 64};
-	Data_conf output12_conf = {996, 996, 64};
+	Data_conf input12_conf = {996, 996, 3};
+	Data_conf output12_conf = {996, 996, 3};
 
 	//pool1
-	Data_conf input13_conf = {996, 996, 64};
-	Data_conf output13_conf = {332, 332, 64};
+	Data_conf input13_conf = {996, 996, 3};
+	Data_conf output13_conf = {332, 332, 3};
 	Pool_conf pool1_conf = {3, 3};
 	
 	//Conv2
