@@ -45,6 +45,116 @@ void conv_forward_tiled(float ***in, float ***out, float ****filter, Conv_conf c
 	// std::cout<<"conv_tiled"<<std::endl;
 }
 
+//orig_conf is the size of original input (before tiling)
+void conv_pool_forward_tiled(float ***in, float ***out, float ****filter, Conv_conf conv_conf, Data_conf orig_conf,
+					Data_conf input_conf, Data_conf output_conf, tile_idx_conf input_tile_conf, tile_idx_conf ouptut_tile_conf) {	
+	int in_h = input_conf.h;
+	int in_w = input_conf.w;
+	int in_c = input_conf.c;
+
+	int out_h = output_conf.h;
+	int out_w = output_conf.w;
+	int out_c = output_conf.c;
+
+
+	//whole convolution layer
+
+	//calculate if this tile need padding
+
+	if ((out_h + input_tile_conf.h_base_idx) < orig_conf.h) {
+
+		#pragma omp parallel
+		for (int h_idx = 0; h_idx <  out_h; h_idx++) {
+			for (int w_idx = 0; w_idx < out_w; w_idx++) {
+				for (int c_idx = 0; c_idx < out_c; c_idx++) {
+					//for each output point
+					int h_in_idx = input_tile_conf.h_base_idx + h_idx;
+					int w_in_idx = input_tile_conf.w_base_idx + w_idx; 
+
+					int h_out_idx = ouptut_tile_conf.h_base_idx + h_idx;
+					int w_out_idx = ouptut_tile_conf.w_base_idx + w_idx;
+					
+					
+					// std::cout<<conv_conf.h<<conv_conf.w<<conv_conf.in_c<<std::endl;
+					float elem = 0.0f;
+					for (int i = 0; i < conv_conf.h; i++) {
+						for (int j = 0; j < conv_conf.w; j++) {
+							for (int k = 0; k < in_c; k++) {
+								elem += in[h_in_idx + i][w_in_idx + j][k] * filter[i][j][k][c_idx];							
+							}
+						}
+					}
+					if (elem > 0)
+						out[h_out_idx][w_out_idx][c_idx] = elem;
+					else
+						out[h_out_idx][w_out_idx][c_idx] = 0;
+				}
+			}
+		}
+	}
+	else {
+		#pragma omp parallel
+		for (int h_idx = 0; h_idx <  out_h - conv_conf.h + 1; h_idx++) {
+			for (int w_idx = 0; w_idx < out_w - conv_conf.w + 1; w_idx++) {
+				for (int c_idx = 0; c_idx < out_c; c_idx++) {
+					//for each output point
+					int h_in_idx = input_tile_conf.h_base_idx + h_idx;
+					int w_in_idx = input_tile_conf.w_base_idx + w_idx; 
+
+					int h_out_idx = ouptut_tile_conf.h_base_idx + h_idx;
+					int w_out_idx = ouptut_tile_conf.w_base_idx + w_idx;
+					
+					
+					// std::cout<<conv_conf.h<<conv_conf.w<<conv_conf.in_c<<std::endl;
+					float elem = 0.0f;
+					for (int i = 0; i < conv_conf.h; i++) {
+						for (int j = 0; j < conv_conf.w; j++) {
+							for (int k = 0; k < in_c; k++) {
+								elem += in[h_in_idx + i][w_in_idx + j][k] * filter[i][j][k][c_idx];							
+							}
+						}
+					}
+					if (elem > 0)
+						out[h_out_idx][w_out_idx][c_idx] = elem;
+					else
+						out[h_out_idx][w_out_idx][c_idx] = 0;
+				}
+			}
+		}
+		#pragma omp parallel
+		for (int h_idx = out_h - conv_conf.h + 1; h_idx <  out_h; h_idx++) {
+			for (int w_idx = out_w - conv_conf.w + 1; w_idx < out_w; w_idx++) {
+				for (int c_idx = 0; c_idx < out_c; c_idx++) {
+					//for each output point
+					int h_in_idx = input_tile_conf.h_base_idx + h_idx;
+					int w_in_idx = input_tile_conf.w_base_idx + w_idx; 
+
+					int h_out_idx = ouptut_tile_conf.h_base_idx + h_idx;
+					int w_out_idx = ouptut_tile_conf.w_base_idx + w_idx;
+					
+					
+					// std::cout<<conv_conf.h<<conv_conf.w<<conv_conf.in_c<<std::endl;
+					float elem = 0.0f;
+					for (int i = 0; i < conv_conf.h; i++) {
+						for (int j = 0; j < conv_conf.w; j++) {
+							for (int k = 0; k < in_c; k++) {
+								if ((h_in_idx + i) < orig_conf.h && (w_in_idx) < orig_conf.w)
+									elem += in[h_in_idx + i][w_in_idx + j][k] * filter[i][j][k][c_idx];
+
+							}
+						}
+					}
+					if (elem > 0)
+						out[h_out_idx][w_out_idx][c_idx] = elem;
+					else
+						out[h_out_idx][w_out_idx][c_idx] = 0;
+				}
+			}
+		}
+	}
+	// std::cout<<"conv_tiled"<<std::endl;
+}
+
 void pool_forward_tiled(float ***in, float ***out, Data_conf input_conf, Pool_conf pool_conf,
 					tile_idx_conf input_tile_conf, tile_idx_conf output_tile_conf) {
 	//initialize out if not already initialized

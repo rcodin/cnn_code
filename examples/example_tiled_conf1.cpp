@@ -80,21 +80,21 @@ int main()
 	//Conv1
 	Conv_conf conv1_conf = {3, 3};
 	
-	Data_conf input11_conf = {998, 998, 3};
-	Data_conf output11_conf = {996, 996, 3};
+	Data_conf input11_conf = {990, 990, 3};
+	Data_conf output11_conf = {990, 990, 3};
 
 	//relu1
-	Data_conf input12_conf = {996, 996, 3};
-	Data_conf output12_conf = {996, 996, 3};
+	Data_conf input12_conf = {990, 990, 3};
+	Data_conf output12_conf = {990, 990, 3};
 
 	//pool1
-	Data_conf input13_conf = {996, 996, 3};
-	Data_conf output13_conf = {332, 332, 3};
+	Data_conf input13_conf = {990, 990, 3};
+	Data_conf output13_conf = {330, 330, 3};
 	Pool_conf pool1_conf = {3, 3};
 	
 	//Conv2
 	struct Conv_conf conv2_conf = {3, 3};
-	Data_conf input21_conf = {332, 332, 64};
+	Data_conf input21_conf = {330, 330, 64};
 	Data_conf output21_conf = {330, 330, 128};
 
 	//relu2
@@ -122,23 +122,23 @@ int main()
 	Pool_conf pool3_conf = {3, 3};
 
 
-	Data_conf input11_tiled_conf = {503, 503, 3};
-	Data_conf output11_tiled_conf = {501, 501, 64};
+	Data_conf input11_tiled_conf = {99, 99, 3};
+	Data_conf output11_tiled_conf = {99, 99, 64};
 
-	Data_conf input12_tiled_conf = {501, 501, 64};
-	Data_conf output12_tiled_conf = {501, 501, 64};
+	Data_conf input12_tiled_conf = {99, 99, 64};
+	Data_conf output12_tiled_conf = {99, 99, 64};
 
-	Data_conf input13_tiled_conf = {501, 501, 64};
-	Data_conf output13_tiled_conf = {167, 167, 64};
+	Data_conf input13_tiled_conf = {99, 99, 64};
+	Data_conf output13_tiled_conf = {99, 99, 64};
 
-	Data_conf input21_tiled_conf = {167, 167, 64};
-	Data_conf output21_tiled_conf = {165, 165, 128};
+	Data_conf input21_tiled_conf = {33, 33, 64};
+	Data_conf output21_tiled_conf = {33, 33, 128};
 
-	Data_conf input22_tiled_conf = {165, 165, 128};
-	Data_conf output22_tiled_conf = {165, 165, 128};
+	Data_conf input22_tiled_conf = {33, 33, 128};
+	Data_conf output22_tiled_conf = {33, 33, 128};
 
-	Data_conf input23_tiled_conf = {165, 165, 128};
-	Data_conf output23_tiled_conf = {55, 55, 128};
+	Data_conf input23_tiled_conf = {33, 33, 128};
+	Data_conf output23_tiled_conf = {11, 11, 128};
 
 	tile_idx_conf input11_tile_mult, input12_tile_mult, input13_tile_mult, input21_tile_mult, input22_tile_mult, input23_tile_mult;
 	tile_idx_conf output11_tile_mult, output12_tile_mult, output13_tile_mult, output21_tile_mult, output22_tile_mult, output23_tile_mult;
@@ -162,8 +162,8 @@ int main()
 	output11_tile_mult = {input12_tile_mult.h_base_idx, input12_tile_mult.w_base_idx, input12_tile_mult.c_base_idx};
 	input11_tile_mult = {output11_tile_mult.h_base_idx, output11_tile_mult.w_base_idx, input11_tiled_conf.c};
 
-	int h_num_tiles = 2;
-	int w_num_tiles = 2;
+	int h_num_tiles = 10;
+	int w_num_tiles = 10;
 
 	tile_idx_conf input11_tile_base, input12_tile_base, input13_tile_base, input21_tile_base, input22_tile_base, input23_tile_base;
 	tile_idx_conf output11_tile_base, output12_tile_base, output13_tile_base, output21_tile_base, output22_tile_base, output23_tile_base;
