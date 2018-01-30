@@ -94,9 +94,9 @@ void conv_relu_forward_tiled(float ***in, float ***out, float ****filter, Conv_c
 	// 	// std::cout<<"conv_tiled"<<std::endl;
 	// }
 	// else {
-		// #pragma omp parallel
-		for (int h_idx = 0; h_idx <  out_h - conv_conf.h + 1; h_idx++) {
-			for (int w_idx = 0; w_idx < out_w - conv_conf.w + 1; w_idx++) {
+		#pragma omp parallel
+		for (int h_idx = 0; h_idx <  out_h; h_idx++) {
+			for (int w_idx = 0; w_idx < out_w; w_idx++) {
 				for (int c_idx = 0; c_idx < out_c; c_idx++) {
 					//for each output point
 					int h_in_idx = input_tile_conf.h_base_idx + h_idx;
