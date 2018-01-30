@@ -162,8 +162,8 @@ int main()
 	output11_tile_mult = {input12_tile_mult.h_base_idx, input12_tile_mult.w_base_idx, input12_tile_mult.c_base_idx};
 	input11_tile_mult = {output11_tile_mult.h_base_idx, output11_tile_mult.w_base_idx, input11_tiled_conf.c};
 
-	int h_num_tiles = 10;
-	int w_num_tiles = 10;
+	int h_num_tiles = 1;
+	int w_num_tiles = 1;
 
 	tile_idx_conf input11_tile_base, input12_tile_base, input13_tile_base, input21_tile_base, input22_tile_base, input23_tile_base;
 	tile_idx_conf output11_tile_base, output12_tile_base, output13_tile_base, output21_tile_base, output22_tile_base, output23_tile_base;
@@ -195,24 +195,24 @@ int main()
 			output23_tile_base = {output23_tile_mult.h_base_idx * h_tile, output23_tile_mult.w_base_idx * w_tile, output23_tile_mult.c_base_idx};
 
 			// std::cout<<"sdsds "<<input11_tile_base.w_base_idx<<std::endl;
-			conv_relu_forward_tiled(input11, output11, conv1_filter, conv1_conf, input11_conf, input11_tiled_conf, output11_tiled_conf, input11_tile_base, output11_tile_base);
+			conv_relu_forward_tiled(input11, output11, conv1_filter, conv1_conf, input11_conf, input11_conf, output11_conf, input11_tile_base, output11_tile_base);
 			// relu_forward_tiled(output11, output12, input12_conf, input12_tile_base, output12_tile_base);
 			// free_mem(input);
 			// input = output;
 			// output = (float ***)alloc_3D(output13_conf.h, output13_conf.w, output13_conf.c, bytes);
-			pool_forward_tiled(output11, output13, input12_tiled_conf, pool1_conf, input13_tile_base, output13_tile_base);
+			pool_forward_tiled(output11, output13, input12_conf, pool1_conf, input13_tile_base, output13_tile_base);
 			
 
 			//conv2->relu->pool
 			// free_mem(input);
 			// input = output;
 			// output = (float ***)alloc_3D(output21_conf.h, output21_conf.w, output21_conf.c, bytes);
-			conv_relu_forward_tiled(output13, output21, conv2_filter, conv2_conf, input21_conf, input21_tiled_conf, output21_tiled_conf, input21_tile_base, input21_tile_base);
+			conv_relu_forward_tiled(output13, output21, conv2_filter, conv2_conf, input21_conf, input21_conf, output21_conf, input21_tile_base, input21_tile_base);
 			// relu_forward_tiled(output21, output22, input22_conf, input22_tile_base, output22_tile_base);
 			// free_mem(input);
 			// input = output;
 			// output = (float ***)alloc_3D(output23_conf.h, output23_conf.w, output23_conf.c, bytes);
-			pool_forward_tiled(output21, output23, input22_tiled_conf, pool2_conf, input23_tile_base, output23_tile_base);
+			pool_forward_tiled(output21, output23, input22_conf, pool2_conf, input23_tile_base, output23_tile_base);
 		}
 	}
 	
