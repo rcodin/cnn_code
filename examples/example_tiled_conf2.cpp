@@ -63,14 +63,13 @@ int main()
 {
 	//conv->relu->pool conv->relu->pool conv->relu->pool fc->fc
 	
-
 	//load network weights
 	size_t bytes = sizeof(float);
-	float ****conv1_filter = (float ****)alloc_4D(3, 3, 3, 64, bytes);
+	float ****conv1_filter = (float ****)alloc_4D(64, 3, 3, 3, bytes);
 
 	// float conv1_filter[3][3][3][3];
-	float ****conv2_filter = (float ****)alloc_4D(3, 3, 64, 128, bytes);
-	float ****conv3_filter = (float ****)alloc_4D(3, 3, 128, 256, bytes);
+	float ****conv2_filter = (float ****)alloc_4D(128, 3, 3, 64, bytes);
+	float ****conv3_filter = (float ****)alloc_4D(256, 3, 3, 128, bytes);
 	float **fc1_filter = (float **)alloc_2D(11*11*256, 512, bytes);
 	float **fc2_filter = (float **)alloc_2D(512, 512, bytes);
 

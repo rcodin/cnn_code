@@ -113,7 +113,7 @@ void conv_relu_forward_tiled(float ***in, float ***out, float ****filter, Conv_c
 							for (int k = 0; k < in_c; k++) {
 								// std::cerr<<"w_in_idx : "<<(w_in_idx)<<std::endl;
 								if ((h_in_idx + i) < orig_conf.h && (w_in_idx + j) < orig_conf.w)
-									elem += in[h_in_idx + i][w_in_idx + j][k] * filter[i][j][k][c_idx];							
+									elem += in[h_in_idx + i][w_in_idx + j][k] * filter[c_idx][i][j][k];							
 							}
 						}
 					}

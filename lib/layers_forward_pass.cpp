@@ -22,7 +22,7 @@ void conv_forward(float ***in, float ***out, float ****filter, Conv_conf conv_co
 				for (int i = 0; i < conv_conf.h; i++) {
 					for (int j = 0; j < conv_conf.w; j++) {
 						for (int k = 0; k < in_c; k++) {	
-							elem += in[h_idx + i][w_idx + j][k] * filter[i][j][k][c_idx];
+							elem += in[h_idx + i][w_idx + j][k] * filter[c_idx][i][j][k];
 						}
 					}
 				}
