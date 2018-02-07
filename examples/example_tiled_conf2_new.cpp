@@ -121,16 +121,16 @@ int main()
 	Pool_conf pool3_conf = {3, 3};
 
 
-	Data_conf input11_tiled_conf = {99, 99, 3};
-	Data_conf output11_tiled_conf = {99, 99, 64};
+	Data_conf input11_tiled_conf = {107, 107, 3};
+	Data_conf output11_tiled_conf = {105, 105, 64};
 
-	Data_conf input12_tiled_conf = {99, 99, 64};
-	Data_conf output12_tiled_conf = {99, 99, 64};
+	Data_conf input12_tiled_conf = {105, 105, 64};
+	Data_conf output12_tiled_conf = {105, 105, 64};
 
-	Data_conf input13_tiled_conf = {99, 99, 64};
-	Data_conf output13_tiled_conf = {33, 33, 64};
+	Data_conf input13_tiled_conf = {105, 105, 64};
+	Data_conf output13_tiled_conf = {35, 35, 64};
 
-	Data_conf input21_tiled_conf = {33, 33, 64};
+	Data_conf input21_tiled_conf = {35, 35, 64};
 	Data_conf output21_tiled_conf = {33, 33, 128};
 
 	Data_conf input22_tiled_conf = {33, 33, 128};
