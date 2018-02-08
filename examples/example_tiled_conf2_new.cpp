@@ -79,21 +79,21 @@ int main()
 	//Conv1
 	Conv_conf conv1_conf = {3, 3};
 	
-	Data_conf input11_conf = {990, 990, 3};
-	Data_conf output11_conf = {990, 990, 64};
+	Data_conf input11_conf = {998, 998, 3};
+	Data_conf output11_conf = {996, 996, 64};
 
 	//relu1
-	Data_conf input12_conf = {990, 990, 64};
-	Data_conf output12_conf = {990, 990, 64};
+	Data_conf input12_conf = {996, 996, 64};
+	Data_conf output12_conf = {996, 996, 64};
 
 	//pool1
-	Data_conf input13_conf = {990, 990, 64};
-	Data_conf output13_conf = {330, 330, 64};
+	Data_conf input13_conf = {996, 996, 64};
+	Data_conf output13_conf = {332, 332, 64};
 	Pool_conf pool1_conf = {3, 3};
 	
 	//Conv2
 	struct Conv_conf conv2_conf = {3, 3};
-	Data_conf input21_conf = {330, 330, 64};
+	Data_conf input21_conf = {332, 332, 64};
 	Data_conf output21_conf = {330, 330, 128};
 
 	//relu2
@@ -119,7 +119,6 @@ int main()
 	Data_conf input33_conf = {108, 108, 256};
 	Data_conf output33_conf = {36, 36, 256};
 	Pool_conf pool3_conf = {3, 3};
-
 
 	Data_conf input11_tiled_conf = {107, 107, 3};
 	Data_conf output11_tiled_conf = {105, 105, 64};
