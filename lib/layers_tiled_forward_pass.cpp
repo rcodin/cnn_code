@@ -57,7 +57,7 @@ void conv_relu_forward_tiled(float ***in, float ***out, float ****filter, Conv_c
 	int out_c = output_conf.c;
 
 	long long int count = 0;
-	#pragma omp parallel for
+	// #pragma omp parallel for
 	for (int h_idx = 0; h_idx <  out_h; h_idx++) {
 		for (int w_idx = 0; w_idx < out_w; w_idx++) {
 			for (int c_idx = 0; c_idx < out_c; c_idx++) {

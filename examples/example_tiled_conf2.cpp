@@ -175,6 +175,7 @@ int main()
 	float ***output22 = (float ***)alloc_3D(output22_conf.h, output22_conf.w, output22_conf.c, bytes);
 	float ***output23 = (float ***)alloc_3D(output23_conf.h, output23_conf.w, output23_conf.c, bytes);
 
+	#pragma omp parallel for
 	for (int h_tile = 0; h_tile < h_num_tiles; h_tile++) {
 		for (int w_tile = 0; w_tile < h_num_tiles; w_tile++) {
 			//conv1->relu->pool
