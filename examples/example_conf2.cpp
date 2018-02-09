@@ -77,24 +77,24 @@ int main()
 	//create input 
 	//conv1->relu->pool
 
-		//Conv1
+	//Conv1
 	Conv_conf conv1_conf = {3, 3};
 	
-	Data_conf input11_conf = {990, 990, 3};
-	Data_conf output11_conf = {990, 990, 64};
+	Data_conf input11_conf = {998, 998, 3};
+	Data_conf output11_conf = {996, 996, 64};
 
 	//relu1
-	Data_conf input12_conf = {990, 990, 64};
-	Data_conf output12_conf = {990, 990, 64};
+	Data_conf input12_conf = {996, 996, 64};
+	Data_conf output12_conf = {996, 996, 64};
 
 	//pool1
-	Data_conf input13_conf = {990, 990, 64};
-	Data_conf output13_conf = {330, 330, 64};
+	Data_conf input13_conf = {996, 996, 64};
+	Data_conf output13_conf = {332, 332, 64};
 	Pool_conf pool1_conf = {3, 3};
 	
 	//Conv2
 	struct Conv_conf conv2_conf = {3, 3};
-	Data_conf input21_conf = {330, 330, 64};
+	Data_conf input21_conf = {332, 332, 64};
 	Data_conf output21_conf = {330, 330, 128};
 
 	//relu2
@@ -121,17 +121,16 @@ int main()
 	Data_conf output33_conf = {36, 36, 256};
 	Pool_conf pool3_conf = {3, 3};
 
+	Data_conf input11_tiled_conf = {107, 107, 3};
+	Data_conf output11_tiled_conf = {105, 105, 64};
 
-	Data_conf input11_tiled_conf = {99, 99, 3};
-	Data_conf output11_tiled_conf = {99, 99, 64};
+	Data_conf input12_tiled_conf = {105, 105, 64};
+	Data_conf output12_tiled_conf = {105, 105, 64};
 
-	Data_conf input12_tiled_conf = {99, 99, 64};
-	Data_conf output12_tiled_conf = {99, 99, 64};
+	Data_conf input13_tiled_conf = {105, 105, 64};
+	Data_conf output13_tiled_conf = {35, 35, 64};
 
-	Data_conf input13_tiled_conf = {99, 99, 64};
-	Data_conf output13_tiled_conf = {33, 33, 64};
-
-	Data_conf input21_tiled_conf = {33, 33, 64};
+	Data_conf input21_tiled_conf = {35, 35, 64};
 	Data_conf output21_tiled_conf = {33, 33, 128};
 
 	Data_conf input22_tiled_conf = {33, 33, 128};
