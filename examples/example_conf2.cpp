@@ -194,7 +194,7 @@ int main()
 			output23_tile_base = {output23_tile_mult.h_base_idx * h_tile, output23_tile_mult.w_base_idx * w_tile, output23_tile_mult.c_base_idx};
 
 			// std::cout<<"sdsds "<<input11_tile_base.w_base_idx<<std::endl;
-			conv_relu_forward_tiled(input11, output11, conv1_filter, conv1_conf, input11_conf, input11_conf, output11_conf, input11_tile_base, output11_tile_base);
+			conv_relu_forward_tiled_parallel(input11, output11, conv1_filter, conv1_conf, input11_conf, input11_conf, output11_conf, input11_tile_base, output11_tile_base);
 			// relu_forward_tiled(output11, output12, input12_conf, input12_tile_base, output12_tile_base);
 			// free_mem(input);
 			// input = output;
@@ -206,7 +206,7 @@ int main()
 			// free_mem(input);
 			// input = output;
 			// output = (float ***)alloc_3D(output21_conf.h, output21_conf.w, output21_conf.c, bytes);
-			conv_relu_forward_tiled(output13, output21, conv2_filter, conv2_conf, input21_conf, input21_conf, output21_conf, input21_tile_base, input21_tile_base);
+			conv_relu_forward_tiled_parallel(output13, output21, conv2_filter, conv2_conf, input21_conf, input21_conf, output21_conf, input21_tile_base, input21_tile_base);
 			// relu_forward_tiled(output21, output22, input22_conf, input22_tile_base, output22_tile_base);
 			// free_mem(input);
 			// input = output;

@@ -197,63 +197,9 @@ int main()
 
 			// std::cout<<"sdsds "<<input11_tile_base.w_base_idx<<std::endl;
 			conv_relu_forward_tiled(input11, output11, conv1_filter, conv1_conf, input11_conf, input11_tiled_conf, output11_tiled_conf, input11_tile_base, output11_tile_base);
-			// relu_forward_tiled(output11, output12, input12_conf, input12_tile_base, output12_tile_base);
-			// free_mem(input);
-			// input = output;
-			// output = (float ***)alloc_3D(output13_conf.h, output13_conf.w, output13_conf.c, bytes);
 			pool_forward_tiled(output11, output13, input12_tiled_conf, pool1_conf, input13_tile_base, output13_tile_base);
-			
-
-			//conv2->relu->pool
-			// free_mem(input);
-			// input = output;
-			// output = (float ***)alloc_3D(output21_conf.h, output21_conf.w, output21_conf.c, bytes);
 			conv_relu_forward_tiled(output13, output21, conv2_filter, conv2_conf, input21_conf, input21_tiled_conf, output21_tiled_conf, input21_tile_base, input21_tile_base);
-			// relu_forward_tiled(output21, output22, input22_conf, input22_tile_base, output22_tile_base);
-			// free_mem(input);
-			// input = output;
-			// output = (float ***)alloc_3D(output23_conf.h, output23_conf.w, output23_conf.c, bytes);
 			pool_forward_tiled(output21, output23, input22_tiled_conf, pool2_conf, input23_tile_base, output23_tile_base);
 		}
 	}
-	
-	//conv3->relu->pool
-	// float ***input = output22;
-	// float ***output = output23;
-	// free_mem(input);
-	// input = output;
-	// output = (float ***)alloc_3D(output31_conf.h, output31_conf.w, output31_conf.c, bytes);
-	// conv_forward(input, output, conv3_filter, conv3_conf, input31_conf, output31_conf);
-	// relu_forward(output, output, input32_conf);
-	// free_mem(input);
-	// input = output;
-	// output = (float ***)alloc_3D(output33_conf.h, output33_conf.w, output33_conf.c, bytes);
-	// pool_forward(input, output, input33_conf, pool3_conf);
-
-	//fc1
-	// Data_conf input_conf;
-	// Data_conf output_conf;
-	// free_mem(input);
-	// input = output;
-	// float *fc_output = (float *)malloc(512 * bytes);
-
-	// input_conf.h = 11;
-	// input_conf.w = 11;
-	// input_conf.c = 256;
-	// output_conf.h = 512;
-	// linearize_conv(input, fc_output, fc1_filter, input_conf, output_conf);
-
-
-	// //fc2
-	// int input_size = 512;
-	// int output_size = 512;
-	// free_mem(input);
-	// float *fc_input;
-
-	// fc_input = fc_output;
-	// fc_output = (float *)malloc(output_size);
-	// fc_forward(fc_input, fc_output, fc2_filter, input_size, output_size);
-
-	// free_mem(input);
-	// free_mem(output);
 }
