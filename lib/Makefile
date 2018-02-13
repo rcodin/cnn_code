@@ -1,7 +1,7 @@
 program_NAME := libcnn.so
 
-SRCS = blas.cpp layers_forward_pass.cpp layers_tiled_forward_pass.cpp layer.cpp net.cpp
-OBJS = blas.o layers_forward_pass.o layers_tiled_forward_pass.o layer.o net.o
+SRCS = blas.cpp layers_forward_pass.cpp layers_tiled_forward_pass.cpp layer.cpp net.cpp utils.cpp
+OBJS = blas.o layers_forward_pass.o layers_tiled_forward_pass.o layer.o net.o utils.o
 INCLUDE_DIR := ../include
 CFLAGS = -std=c++11
 

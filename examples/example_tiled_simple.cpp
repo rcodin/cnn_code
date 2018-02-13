@@ -10,54 +10,6 @@ Neural Network with 2 tiled and fused layers
 
 using namespace std;
 
-void *alloc_2D(int i, int j, size_t bytes) {
-	void **ret = (void **)malloc(i * sizeof(void *));
-
-	for (int i_idx = 0; i_idx < i; i_idx++)
-		ret[i_idx] = malloc(j * bytes);
-	return ret;	
-}
-
-void *alloc_3D(int i, int j, int k, size_t bytes) {
-	void ***ret = (void ***)malloc(i * sizeof(void *));
-
-	for (int i_idx = 0; i_idx < i; i_idx++) {
-		ret[i_idx] = (void **)malloc(j * sizeof(void *));
-
-		for (int j_idx = 0; j_idx < j; j_idx++)
-			ret[i_idx][j_idx] = malloc(k * bytes);
-	}
-
-	// std::cout<<ret<<std::endl;
-	if (ret == NULL)
-		std::cout<<"Memory not allocated";
-	return ret;
-}
-
-void *alloc_4D(int i, int j, int k, int l, size_t bytes) {
-	void ****ret = (void ****)malloc(i * sizeof(void *));
-
-	for (int i_idx = 0; i_idx < i; i_idx++) {
-		ret[i_idx] = (void ***)malloc(j * sizeof(void *));
-
-		for (int j_idx = 0; j_idx < j; j_idx++) {
-			ret[i_idx][j_idx] = (void **)malloc(k * sizeof(void *));
-
-			for (int k_idx = 0; k_idx < k; k_idx++)
-				ret[i_idx][j_idx][k_idx] = malloc(l * bytes);
-		}
-	}
-
-	// printf("%d\n", i * j * k * l * bytes);
-	if (ret == NULL)
-		std::cout<<"Memory not allocated";
-	return ret;
-}
-
-void free_mem(void *ptr) {
-	free(ptr);
-}
-
 
 int main()
 {
