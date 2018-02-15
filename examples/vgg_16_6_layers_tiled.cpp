@@ -15,14 +15,7 @@ int main()
 {
 	//conv->relu->pool conv->relu->pool conv->relu->pool fc->fc
 	
-	//load network weights
-	size_t bytes = sizeof(float);
-	float ****conv11_filter = (float ****)alloc_4D(64, 3, 3, 3, bytes);
-	float ****conv12_filter = (float ****)alloc_4D(128, 3, 3, 64, bytes);
 	
-	//create input 
-	//conv1->relu->pool
-
 	//Conv11
 	Conv_conf conv11_conf = {3, 3};
 	Data_conf input11_conf = {224, 224, 3};
@@ -38,48 +31,52 @@ int main()
 	Pool_conf pool1_conf = {3, 3};
 	Data_conf input13_conf = {224, 224, 64};
 	Data_conf output13_conf = {112, 112, 64};
-	
-
 
 	//Conv21
-	Conv_conf conv11_conf = {3, 3};	
-	Data_conf input11_conf = {112, 112, 64};
-	Data_conf output11_conf = {112, 112, 128};
+	Conv_conf conv21_conf = {3, 3};	
+	Data_conf input21_conf = {112, 112, 64};
+	Data_conf output21_conf = {112, 112, 128};
 
 	//Conv22
 	Conv_conf conv22_conf = {3, 3};
-	Data_conf input11_conf = {112, 112, 128};
-	Data_conf output11_conf = {112, 112, 128};
+	Data_conf input22_conf = {112, 112, 128};
+	Data_conf output22_conf = {112, 112, 128};
 
 	//Pool2	
 	Pool_conf pool2_conf = {3, 3};
 	Data_conf input23_conf = {112, 112, 128};
 	Data_conf output23_conf = {112, 112, 128};
 
+	int h_num_tiles = 8;
+	int w_num_tiles = 8;
 
-	Data_conf input11_tiled_conf = {40, 40, 3};
-	Data_conf output11_tiled_conf = {38, 38, 64};
+	//Pool2
+	Data_conf output23_tiled_conf = {output23_conf.h/h_num_tiles, output23_conf.w/w_num_tiles, output23_conf.c};
+	Data_conf input23_tiled_conf = {output23_tiled_conf.h * pool2_conf.h, output23_tiled_conf.w * pool2_conf.h, input23_conf.c};
 
-	Data_conf input12_tiled_conf = {38, 38, 16};
-	Data_conf output12_tiled_conf = {36, 36, 64};
+	//Conv22
+	Data_conf output22_tiled_conf = {input23_tiled_conf.h, input23_tiled_conf.w, output22_conf.c};
+	Data_conf input22_tiled_conf = {output22_tiled_conf.h + (conv22_conf.h - 1), output22_tiled_conf.w + (conv22_conf.w - 1), input22_conf.c};
 
-	Data_conf input13_tiled_conf = {36, 36, 16};
-	Data_conf output13_tiled_conf = {18, 18, 64};
+	Data_conf output21_tiled_conf = {input22_tiled_conf.h, input22_tiled_conf.w, output21_conf.c};
+	Data_conf input21_tiled_conf = {output22_tiled_conf.h + (conv21_conf.h - 1), output22_tiled_conf.w + (conv21_conf.w - 1), input21_conf.c};
 
-	Data_conf input21_tiled_conf = {18, 18, 16};
-	Data_conf output21_tiled_conf = {16, 16, 64};
+	Data_conf output13_tiled_conf = {input21_tiled_conf.h, input21_tiled_conf.w, output13_conf.c};
+	Data_conf input13_tiled_conf = {output13_tiled_conf.h * pool2_conf.h, output13_tiled_conf.w * pool2_conf.w, input13_conf.c};
 
-	Data_conf input22_tiled_conf = {16, 16, 16};
-	Data_conf output22_tiled_conf = {14, 14, 64};
+	Data_conf output12_tiled_conf = {input13_tiled_conf.h, input13_tiled_conf.w, output12_conf.c};
+	Data_conf input12_tiled_conf = {output12_tiled_conf.h + (conv12_conf.h - 1), output12_tiled_conf.w + (conv12_conf.w - 1), input12_conf.c};
 
-	Data_conf input23_tiled_conf = {14, 14, 16};
-	Data_conf output23_tiled_conf = {7, 7, 64};
+	Data_conf output11_tiled_conf = {38, 38, output11_conf.c};
+	Data_conf input11_tiled_conf = {40, 40, input11_conf.c};
+
 	
 	tile_idx_conf input11_tile_mult, input12_tile_mult;
 	tile_idx_conf output11_tile_mult, output12_tile_mult;
 	
 
 
+	//compute the initial index
 	output12_tile_mult = {output12_tiled_conf.h, output12_tiled_conf.w, output12_tiled_conf.c};
 	input12_tile_mult = {output12_tile_mult.h_base_idx, output12_tile_mult.w_base_idx, output12_tile_mult.c_base_idx};
 
@@ -87,8 +84,7 @@ int main()
 	input11_tile_mult = {output11_tile_mult.h_base_idx, output11_tile_mult.w_base_idx, input11_tiled_conf.c};
 
 
-	int h_num_tiles = 8;
-	int w_num_tiles = 8;
+
 
 	tile_idx_conf input11_tile_base, input12_tile_base;
 	tile_idx_conf output11_tile_base, output12_tile_base;
