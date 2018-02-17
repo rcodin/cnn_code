@@ -1,0 +1,17 @@
+#ifndef UTILS_HPP
+#define UTILS_HPP
+
+#include <cstdlib>
+#include <iostream>
+#include <layers.hpp>
+
+//memory manager
+void *alloc_1D(int i, size_t bytes);
+void *alloc_2D(int i, int j, size_t bytes);
+void *alloc_3D(int i, int j, int k, size_t bytes);
+void *alloc_4D(int i, int j, int k, int l, size_t bytes);
+void free_mem(void *ptr);
+
+void print_conf_cfg(Conv_conf cfg, Data_conf input_cfg, Data_conf output_cfg);
+
+#endif
