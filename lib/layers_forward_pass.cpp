@@ -66,7 +66,7 @@ void conv_relu_forward(float ***in, float ***out, float ****filter, Conv_conf co
 		}
 	#else
     if (output_conf.c <= 64) {
-	    // #pragma omp parallel
+	    #pragma omp parallel
 		for (int h_idx_out = 0; h_idx_out < out_h; h_idx_out += 16) {
 			for (int w_idx_out = 0; w_idx_out < out_w; w_idx_out += 16) {
 				for (int c_idx = 0; c_idx < out_c; c_idx++) {
@@ -98,7 +98,7 @@ void conv_relu_forward(float ***in, float ***out, float ****filter, Conv_conf co
 
 	// t1 = high_resolution_clock::now();
 	else {
-// #pragma omp parallel
+		#pragma omp parallel
 		for (int h_idx_out = 0; h_idx_out < out_h; h_idx_out += 7) {
 			for (int w_idx_out = 0; w_idx_out < out_w; w_idx_out += 7) {
 				for (int c_idx = 0; c_idx < out_c; c_idx++) {
