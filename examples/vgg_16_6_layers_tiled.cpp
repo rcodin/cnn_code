@@ -67,7 +67,7 @@ int main()
 	Data_conf output12_tiled_conf = {input13_tiled_conf.h, input13_tiled_conf.w, output12_conf.c};
 	Data_conf input12_tiled_conf = {output12_tiled_conf.h + (conv12_conf.h - 1), output12_tiled_conf.w + (conv12_conf.w - 1), input12_conf.c};
 
-	Data_conf output11_tiled_conf = {38, 38, output11_conf.c};
+	Data_conf output11_tiled_conf = {input13_tiled_conf.h, 38, output11_conf.c};
 	Data_conf input11_tiled_conf = {40, 40, input11_conf.c};
 
 	

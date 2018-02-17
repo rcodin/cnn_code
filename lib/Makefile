@@ -5,11 +5,13 @@ OBJS = blas.o layers_forward_pass.o layers_tiled_forward_pass.o layer.o net.o ut
 INCLUDE_DIR := ../include
 CFLAGS = -std=c++11
 
-
 .PHONY: all
 
 all: $(program_NAME)
 
 $(program_NAME): $(SRCS) 
-	g++ -fPIC -I$(INCLUDE_DIR) $(CFLAGS) -O -c $(SRCS) -fopenmp
+	g++ -fPIC -I$(INCLUDE_DIR) $(CFLAGS) -O -c -D TILE=0 $(SRCS) -fopenmp
+	g++ -shared -o libcnn.so $(OBJS) -lm -fopenmp
+TILE:
+	g++ -fPIC -I$(INCLUDE_DIR) $(CFLAGS) -O -c -D TILE=1 $(SRCS) -fopenmp
 	g++ -shared -o libcnn.so $(OBJS) -lm -fopenmp

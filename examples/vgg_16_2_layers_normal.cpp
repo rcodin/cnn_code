@@ -43,7 +43,8 @@ int main()
 	Data_conf input12_tiled_conf = {226, 226, 16};
 	Data_conf output12_tiled_conf = {224, 224, 64};
 
-
+	//pool1
+	
 	tile_idx_conf input11_tile_mult, input12_tile_mult;
 	tile_idx_conf output11_tile_mult, output12_tile_mult;
 	

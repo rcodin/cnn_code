@@ -44,24 +44,48 @@ void conv_relu_forward(float ***in, float ***out, float ****filter, Conv_conf co
 	high_resolution_clock::time_point t1 = high_resolution_clock::now();
 	// long long count = 0;
 	// int count = 0;
-    if (output_conf.c <= 128) {
-	    #pragma omp parallel
+	#if !TILE
+		#pragma omp parallel
 		for (int h_idx = 0; h_idx < out_h; h_idx++) {
 			for (int w_idx = 0; w_idx < out_w; w_idx++) {
 				for (int c_idx = 0; c_idx < out_c; c_idx++) {
 					//for each output point
-						
+					
 					// std::cout<<conv_conf.h<<conv_conf.w<<conv_conf.in_c<<std::endl;
 					float elem = 0.0f;
 					for (int i = 0; i < conv_conf.h; i++) {
 						for (int j = 0; j < conv_conf.w; j++) {
-							for (int k = 0; k < in_c; k++) {
-								// count++;
+							for (int k = 0; k < in_c; k++) {	
 								elem += in[h_idx + i][w_idx + j][k] * filter[c_idx][i][j][k];
 							}
 						}
 					}
 					out[h_idx][w_idx][c_idx] = std::fmax(0, elem);
+				}
+			}
+		}
+	#else
+    if (output_conf.c <= 64) {
+	    // #pragma omp parallel
+		for (int h_idx_out = 0; h_idx_out < out_h; h_idx_out += 16) {
+			for (int w_idx_out = 0; w_idx_out < out_w; w_idx_out += 16) {
+				for (int c_idx = 0; c_idx < out_c; c_idx++) {
+					//for each output point
+					for (int h_idx = h_idx_out; h_idx < (h_idx_out + 16); h_idx++) {
+						for (int w_idx = w_idx_out; w_idx < (w_idx_out + 16); w_idx++) {
+					// std::cout<<conv_conf.h<<conv_conf.w<<conv_conf.in_c<<std::endl;
+							float elem = 0.0f;
+							for (int i = 0; i < conv_conf.h; i++) {
+								for (int j = 0; j < conv_conf.w; j++) {
+									for (int k = 0; k < in_c; k++) {
+										// count++;
+										elem += in[h_idx + i][w_idx + j][k] * filter[c_idx][i][j][k];
+									}
+								}
+							}
+							out[h_idx][w_idx][c_idx] = std::fmax(0, elem);
+						}
+					}
 				}
 			}
 		}
@@ -74,24 +98,26 @@ void conv_relu_forward(float ***in, float ***out, float ****filter, Conv_conf co
 
 	// t1 = high_resolution_clock::now();
 	else {
-		#pragma omp parallel
-		for (int c_idx = 0; c_idx < out_c; c_idx++) {
-			for (int h_idx = 0; h_idx < out_h; h_idx++) {
-				for (int w_idx = 0; w_idx < out_w; w_idx++) {
-					
+// #pragma omp parallel
+		for (int h_idx_out = 0; h_idx_out < out_h; h_idx_out += 7) {
+			for (int w_idx_out = 0; w_idx_out < out_w; w_idx_out += 7) {
+				for (int c_idx = 0; c_idx < out_c; c_idx++) {
 					//for each output point
-					
+					for (int h_idx = h_idx_out; h_idx < (h_idx_out + 7); h_idx++) {
+						for (int w_idx = w_idx_out; w_idx < (w_idx_out + 7); w_idx++) {
 					// std::cout<<conv_conf.h<<conv_conf.w<<conv_conf.in_c<<std::endl;
-					float elem = 0.0f;
-					for (int i = 0; i < conv_conf.h; i++) {
-						for (int j = 0; j < conv_conf.w; j++) {
-							for (int k = 0; k < in_c; k++) {
-								// count++;	
-								elem += in[h_idx + i][w_idx + j][k] * filter[c_idx][i][j][k];
+							float elem = 0.0f;
+							for (int i = 0; i < conv_conf.h; i++) {
+								for (int j = 0; j < conv_conf.w; j++) {
+									for (int k = 0; k < in_c; k++) {
+										// count++;
+										elem += in[h_idx + i][w_idx + j][k] * filter[c_idx][i][j][k];
+									}
+								}
 							}
+							out[h_idx][w_idx][c_idx] = std::fmax(0, elem);
 						}
 					}
-					out[h_idx][w_idx][c_idx] = std::fmax(0, elem);
 				}
 			}
 		}
@@ -101,9 +127,11 @@ void conv_relu_forward(float ***in, float ***out, float ****filter, Conv_conf co
 	auto duration = duration_cast<milliseconds>( t2 - t1 ).count();
 
 	std::cout<<"Time taken in milliseconds : "<<duration<<std::endl<<std::endl;
+	#endif
 }
 
 void pool_forward(float ***in, float ***out, Data_conf input_conf, Pool_conf pool_conf) {
+	high_resolution_clock::time_point t1 = high_resolution_clock::now();
 	//initialize out if not already initialized
 	for (int h_idx = 0; h_idx < input_conf.h; h_idx++) {
 		for (int w_idx = 0; w_idx < input_conf.w; w_idx++) {
@@ -113,6 +141,10 @@ void pool_forward(float ***in, float ***out, Data_conf input_conf, Pool_conf poo
 			}
 		}
 	}
+	high_resolution_clock::time_point t2 = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>( t2 - t1 ).count();
+
+	std::cout<<"Time taken in microseconds : "<<duration<<std::endl<<std::endl;
 	// std::cout<<"pool"<<std::endl;
 }
 
