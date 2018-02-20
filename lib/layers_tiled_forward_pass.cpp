@@ -137,9 +137,30 @@ void conv_relu_forward_tiled(float ***in, float ***out, float ****filter, Conv_c
 	// std::cout<<count<<std::endl;
 }
 
+void pool_forward_tiled_parallel(float ***in, float ***out, Data_conf input_conf, Pool_conf pool_conf,
+					tile_idx_conf input_tile_conf, tile_idx_conf output_tile_conf) {
+	//initialize out if not already initialized
+	for (int h_idx = 0; h_idx < (input_conf.h); h_idx++) {
+		for (int w_idx = 0; w_idx < (input_conf.w); w_idx++) {
+			for (int c_idx = 0; c_idx < (input_conf.c); c_idx++) {
+				// std::cout<<"pool"<<std::endl;
+				int h_in_idx = input_tile_conf.h_base_idx + h_idx;
+				int w_in_idx = input_tile_conf.w_base_idx + w_idx; 
+
+				int h_out_idx = output_tile_conf.h_base_idx + h_idx/pool_conf.h;
+				int w_out_idx = output_tile_conf.w_base_idx + w_idx/pool_conf.w;
+
+				out[h_out_idx][w_out_idx][c_idx] = 
+					std::fmax(out[h_out_idx][w_out_idx][c_idx], in[h_in_idx][w_in_idx][c_idx]);
+			}
+		}
+	}
+	// std::cout<<"pool_tiled"<<std::endl;
+}
 void pool_forward_tiled(float ***in, float ***out, Data_conf input_conf, Pool_conf pool_conf,
 					tile_idx_conf input_tile_conf, tile_idx_conf output_tile_conf) {
 	//initialize out if not already initialized
+	#pragma omp parallel for
 	for (int h_idx = 0; h_idx < (input_conf.h); h_idx++) {
 		for (int w_idx = 0; w_idx < (input_conf.w); w_idx++) {
 			for (int c_idx = 0; c_idx < (input_conf.c); c_idx++) {

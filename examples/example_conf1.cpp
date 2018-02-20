@@ -80,7 +80,7 @@ int main()
 	//Conv1
 	Conv_conf conv1_conf = {3, 3};
 	
-	Data_conf input11_conf = {272, 272, 3};
+	Data_conf input11_conf = {270, 270, 3};
 	Data_conf output11_conf = {270, 270, 64};
 
 	//relu1
@@ -168,14 +168,14 @@ int main()
 	tile_idx_conf input11_tile_base, input12_tile_base, input13_tile_base, input21_tile_base, input22_tile_base, input23_tile_base;
 	tile_idx_conf output11_tile_base, output12_tile_base, output13_tile_base, output21_tile_base, output22_tile_base, output23_tile_base;
 
-	float ***input11 = (float ***)alloc_3D(input11_conf.h, input11_conf.w, input11_conf.c, bytes);
-	float ***output11 = (float ***)alloc_3D(output11_conf.h, output11_conf.w, output11_conf.c, bytes);
+	float ***input11 = (float ***)alloc_3D(input11_conf.h + 2, input11_conf.w + 2, input11_conf.c, bytes);
+	float ***output11 = (float ***)alloc_3D(output11_conf.h + 2, output11_conf.w + 2, output11_conf.c, bytes);
 	
-	float ***output12 = (float ***)alloc_3D(output12_conf.h, output12_conf.w, output12_conf.c, bytes);
-	float ***output13 = (float ***)alloc_3D(output13_conf.h, output13_conf.w, output13_conf.c, bytes);
-	float ***output21 = (float ***)alloc_3D(output21_conf.h, output21_conf.w, output21_conf.c, bytes);
-	float ***output22 = (float ***)alloc_3D(output22_conf.h, output22_conf.w, output22_conf.c, bytes);
-	float ***output23 = (float ***)alloc_3D(output23_conf.h, output23_conf.w, output23_conf.c, bytes);
+	float ***output12 = (float ***)alloc_3D(output12_conf.h + 2, output12_conf.w + 2, output12_conf.c, bytes);
+	float ***output13 = (float ***)alloc_3D(output13_conf.h + 2, output13_conf.w + 2, output13_conf.c, bytes);
+	float ***output21 = (float ***)alloc_3D(output21_conf.h + 2, output21_conf.w + 2, output21_conf.c, bytes);
+	float ***output22 = (float ***)alloc_3D(output22_conf.h + 2, output22_conf.w + 2, output22_conf.c, bytes);
+	float ***output23 = (float ***)alloc_3D(output23_conf.h + 2, output23_conf.w + 2, output23_conf.c, bytes);
 
 	for (int h_tile = 0; h_tile < h_num_tiles; h_tile++) {
 		for (int w_tile = 0; w_tile < h_num_tiles; w_tile++) {
@@ -195,24 +195,24 @@ int main()
 			output23_tile_base = {output23_tile_mult.h_base_idx * h_tile, output23_tile_mult.w_base_idx * w_tile, output23_tile_mult.c_base_idx};
 
 			// std::cout<<"sdsds "<<input11_tile_base.w_base_idx<<std::endl;
-			conv_relu_forward_tiled(input11, output11, conv1_filter, conv1_conf, input11_conf, input11_conf, output11_conf, input11_tile_base, output11_tile_base);
+			conv_relu_forward_tiled_parallel(input11, output11, conv1_filter, conv1_conf, input11_conf, input11_conf, output11_conf, input11_tile_base, output11_tile_base);
 			// relu_forward_tiled(output11, output12, input12_conf, input12_tile_base, output12_tile_base);
 			// free_mem(input);
 			// input = output;
 			// output = (float ***)alloc_3D(output13_conf.h, output13_conf.w, output13_conf.c, bytes);
-			pool_forward_tiled(output11, output13, input12_conf, pool1_conf, input13_tile_base, output13_tile_base);
+			pool_forward_tiled_parallel(output11, output13, input12_conf, pool1_conf, input13_tile_base, output13_tile_base);
 			
 
 			//conv2->relu->pool
 			// free_mem(input);
 			// input = output;
 			// output = (float ***)alloc_3D(output21_conf.h, output21_conf.w, output21_conf.c, bytes);
-			conv_relu_forward_tiled(output13, output21, conv2_filter, conv2_conf, input21_conf, input21_conf, output21_conf, input21_tile_base, input21_tile_base);
+			conv_relu_forward_tiled_parallel(output13, output21, conv2_filter, conv2_conf, input21_conf, input21_conf, output21_conf, input21_tile_base, input21_tile_base);
 			// relu_forward_tiled(output21, output22, input22_conf, input22_tile_base, output22_tile_base);
 			// free_mem(input);
 			// input = output;
 			// output = (float ***)alloc_3D(output23_conf.h, output23_conf.w, output23_conf.c, bytes);
-			pool_forward_tiled(output21, output23, input22_conf, pool2_conf, input23_tile_base, output23_tile_base);
+			pool_forward_tiled_parallel(output21, output23, input22_conf, pool2_conf, input23_tile_base, output23_tile_base);
 		}
 	}
 	

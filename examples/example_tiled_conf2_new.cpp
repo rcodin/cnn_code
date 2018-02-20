@@ -79,16 +79,16 @@ int main()
 	//Conv1
 	Conv_conf conv1_conf = {3, 3};
 	
-	Data_conf input11_conf = {998, 998, 3};
-	Data_conf output11_conf = {996, 996, 64};
+	Data_conf input11_conf = {990, 990, 3};
+	Data_conf output11_conf = {990, 990, 64};
 
 	//relu1
-	Data_conf input12_conf = {996, 996, 64};
-	Data_conf output12_conf = {996, 996, 64};
+	Data_conf input12_conf = {990, 990, 64};
+	Data_conf output12_conf = {990, 990, 64};
 
 	//pool1
-	Data_conf input13_conf = {996, 996, 64};
-	Data_conf output13_conf = {332, 332, 64};
+	Data_conf input13_conf = {330, 330, 64};
+	Data_conf output13_conf = {330, 330, 64};
 	Pool_conf pool1_conf = {3, 3};
 	
 	//Conv2
@@ -120,23 +120,26 @@ int main()
 	Data_conf output33_conf = {36, 36, 256};
 	Pool_conf pool3_conf = {3, 3};
 
-	Data_conf input11_tiled_conf = {107, 107, 3};
-	Data_conf output11_tiled_conf = {105, 105, 64};
+	int h_num_tiles = 22;
+	int w_num_tiles = 22;
 
-	Data_conf input12_tiled_conf = {105, 105, 64};
-	Data_conf output12_tiled_conf = {105, 105, 64};
+	Data_conf output23_tiled_conf = {output23_conf.h/h_num_tiles, output23_conf.w/w_num_tiles, output23_conf.c};
+	Data_conf input23_tiled_conf = {output23_tiled_conf.h * pool2_conf.h, output23_tiled_conf.w * pool2_conf.w, output23_conf.c};
+	
+	Data_conf output22_tiled_conf = {input23_tiled_conf.h, input23_tiled_conf.w, output22_conf.c};
+	Data_conf input22_tiled_conf = {output22_tiled_conf.h, output22_tiled_conf.w, input22_conf.c};
 
-	Data_conf input13_tiled_conf = {105, 105, 64};
-	Data_conf output13_tiled_conf = {35, 35, 64};
+	Data_conf output21_tiled_conf = {input22_tiled_conf.h, input22_tiled_conf.w, output21_conf.c};
+	Data_conf input21_tiled_conf = {output21_tiled_conf.h + (conv2_conf.h - 1), output21_tiled_conf.w + (conv2_conf.w - 1), input21_conf.c};
 
-	Data_conf input21_tiled_conf = {35, 35, 64};
-	Data_conf output21_tiled_conf = {33, 33, 128};
+	Data_conf output13_tiled_conf = {input21_tiled_conf.h, input21_tiled_conf.w, output13_conf.c};
+	Data_conf input13_tiled_conf = {output13_tiled_conf.h * pool1_conf.h, output13_tiled_conf.w * pool1_conf.w, input13_conf.c};
 
-	Data_conf input22_tiled_conf = {33, 33, 128};
-	Data_conf output22_tiled_conf = {33, 33, 128};
+	Data_conf output12_tiled_conf = {input13_tiled_conf.h, input13_tiled_conf.w, output12_conf.c};
+	Data_conf input12_tiled_conf = {output12_tiled_conf.h, output12_tiled_conf.w, input12_conf.c};
 
-	Data_conf input23_tiled_conf = {33, 33, 128};
-	Data_conf output23_tiled_conf = {11, 11, 128};
+	Data_conf output11_tiled_conf = {input12_tiled_conf.h, input12_tiled_conf.w, output11_conf.c};
+	Data_conf input11_tiled_conf = {output11_tiled_conf.h + (conv1_conf.h - 1), output11_tiled_conf.w + (conv1_conf.w - 1), input11_conf.c};
 
 	tile_idx_conf input11_tile_mult, input12_tile_mult, input13_tile_mult, input21_tile_mult, input22_tile_mult, input23_tile_mult;
 	tile_idx_conf output11_tile_mult, output12_tile_mult, output13_tile_mult, output21_tile_mult, output22_tile_mult, output23_tile_mult;
@@ -160,8 +163,6 @@ int main()
 	output11_tile_mult = {input12_tile_mult.h_base_idx, input12_tile_mult.w_base_idx, input12_tile_mult.c_base_idx};
 	input11_tile_mult = {output11_tile_mult.h_base_idx, output11_tile_mult.w_base_idx, input11_tiled_conf.c};
 
-	int h_num_tiles = 10;
-	int w_num_tiles = 10;
 
 	tile_idx_conf input11_tile_base, input12_tile_base, input13_tile_base, input21_tile_base, input22_tile_base, input23_tile_base;
 	tile_idx_conf output11_tile_base, output12_tile_base, output13_tile_base, output21_tile_base, output22_tile_base, output23_tile_base;
@@ -175,7 +176,7 @@ int main()
 	float ***output22 = (float ***)alloc_3D(output22_tiled_conf.h, output22_tiled_conf.w, output22_tiled_conf.c, bytes);
 	float ***output23 = (float ***)alloc_3D(output23_tiled_conf.h, output23_tiled_conf.w, output23_tiled_conf.c, bytes);
 
-	#pragma omp parallel for
+	#pragma omp parallel for collapse(2)
 	for (int h_tilem = 0; h_tilem < h_num_tiles; h_tilem++) {
 		for (int w_tilem = 0; w_tilem < h_num_tiles; w_tilem++) {
 			//conv1->relu->pool
@@ -196,9 +197,12 @@ int main()
 			output23_tile_base = {output23_tile_mult.h_base_idx * h_tile, output23_tile_mult.w_base_idx * w_tile, output23_tile_mult.c_base_idx};
 
 			// std::cout<<"sdsds "<<input11_tile_base.w_base_idx<<std::endl;
-			conv_relu_forward_tiled(input11, output11, conv1_filter, conv1_conf, input11_conf, input11_tiled_conf, output11_tiled_conf, input11_tile_base, output11_tile_base);
+			conv_relu_forward_tiled(input11, output11, conv1_filter, conv1_conf, input11_conf, 
+										input11_tiled_conf, output11_tiled_conf, input11_tile_base, output11_tile_base);
 			pool_forward_tiled(output11, output13, input12_tiled_conf, pool1_conf, input13_tile_base, output13_tile_base);
-			conv_relu_forward_tiled(output13, output21, conv2_filter, conv2_conf, input21_conf, input21_tiled_conf, output21_tiled_conf, input21_tile_base, input21_tile_base);
+			
+			conv_relu_forward_tiled(output13, output21, conv2_filter, conv2_conf, input21_conf,
+										input21_tiled_conf, output21_tiled_conf, input21_tile_base, input21_tile_base);
 			pool_forward_tiled(output21, output23, input22_tiled_conf, pool2_conf, input23_tile_base, output23_tile_base);
 		}
 	}
