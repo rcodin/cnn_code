@@ -74,14 +74,10 @@ void conv_relu_forward_tiled_parallel(float ***in, float ***out, float ****filte
 				for (int i = 0; i < conv_conf.h; i++) {
 					for (int j = 0; j < conv_conf.w; j++) {
 						for (int k = 0; k < in_c; k++) {
-							// std::cerr<<"w_in_idx : "<<(w_in_idx)<<std::endl;
-							// if ((h_in_idx + i) < orig_conf.h && (w_in_idx + j) < orig_conf.w)
 							elem += in[h_in_idx + i][w_in_idx + j][k] * filter[c_idx][i][j][k];
-								// count++;					
 						}
 					}
 				}
-				// std::cerr<<"w_in_idx : "<<(out_w)<<std::endl;
 				if (elem > 0)
 					out[h_out_idx][w_out_idx][c_idx] = elem;
 				else

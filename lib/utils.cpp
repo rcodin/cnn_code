@@ -2,28 +2,28 @@
 #include <layers.hpp>
 
 void *alloc_1D(int i, size_t bytes) {
-	void *ret = (void *)malloc(i * bytes);
+	void *ret = (void *)calloc(i, bytes);
 
 	return ret;	
 }
 
 
 void *alloc_2D(int i, int j, size_t bytes) {
-	void **ret = (void **)malloc(i * sizeof(void *));
+	void **ret = (void **)calloc(i, sizeof(void *));
 
 	for (int i_idx = 0; i_idx < i; i_idx++)
-		ret[i_idx] = malloc(j * bytes);
+		ret[i_idx] = calloc(j, bytes);
 	return ret;	
 }
 
 void *alloc_3D(int i, int j, int k, size_t bytes) {
-	void ***ret = (void ***)malloc(i * sizeof(void *));
+	void ***ret = (void ***)calloc(i, sizeof(void *));
 
 	for (int i_idx = 0; i_idx < i; i_idx++) {
-		ret[i_idx] = (void **)malloc(j * sizeof(void *));
+		ret[i_idx] = (void **)calloc(j, sizeof(void *));
 
 		for (int j_idx = 0; j_idx < j; j_idx++)
-			ret[i_idx][j_idx] = malloc(k * bytes);
+			ret[i_idx][j_idx] = calloc(k, bytes);
 	}
 
 	// std::cout<<ret<<std::endl;
@@ -33,16 +33,16 @@ void *alloc_3D(int i, int j, int k, size_t bytes) {
 }
 
 void *alloc_4D(int i, int j, int k, int l, size_t bytes) {
-	void ****ret = (void ****)malloc(i * sizeof(void *));
+	void ****ret = (void ****)calloc(i, sizeof(void *));
 
 	for (int i_idx = 0; i_idx < i; i_idx++) {
-		ret[i_idx] = (void ***)malloc(j * sizeof(void *));
+		ret[i_idx] = (void ***)calloc(j, sizeof(void *));
 
 		for (int j_idx = 0; j_idx < j; j_idx++) {
-			ret[i_idx][j_idx] = (void **)malloc(k * sizeof(void *));
+			ret[i_idx][j_idx] = (void **)calloc(k, sizeof(void *));
 
 			for (int k_idx = 0; k_idx < k; k_idx++)
-				ret[i_idx][j_idx][k_idx] = malloc(l * bytes);
+				ret[i_idx][j_idx][k_idx] = calloc(l, bytes);
 		}
 	}
 
