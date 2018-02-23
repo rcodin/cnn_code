@@ -1,6 +1,8 @@
 #include <layers.hpp>
 #include <cmath>
 #include <utils.hpp>
+#include <im2col.hpp>
+#include <mkl.h>
 
 void conv_forward(float ***in, float ***out, float ****filter, Conv_conf conv_conf, Data_conf input_conf, Data_conf output_conf) {	
 	int in_h = input_conf.h;
@@ -31,8 +33,29 @@ void conv_forward(float ***in, float ***out, float ****filter, Conv_conf conv_co
 		}
 	}
 }
+void conv_im2col(float *in, float *out, float *filter, Conv_conf conv_conf,
+					Data_conf input_conf, Data_conf output_conf) {
+	int pad = conv_conf.h / 2;
+	int channels = input_conf.c;
+	int height = input_conf.h;
+	int width = input_conf.w;
+	int ksize = conv_conf.h;
+	int stride = 1;
 
-void conv_relu_forward(float ***in, float ***out, float ****filter, Conv_conf conv_conf, Data_conf input_conf, Data_conf output_conf) {	
+	float *patch_mat = (float *)mkl_malloc(input_conf.h * input_conf.w * input_conf.c * 
+		conv_conf.h * conv_conf.w * sizeof(float), 32);
+	
+	im2col_cpu(in, channels, height, width, ksize, stride, pad, patch_mat);
+	
+	//gemmm
+	//use intel cblas gemm to start with
+
+
+
+}
+
+void conv_relu_forward(float ***in, float ***out, float ****filter, Conv_conf conv_conf,
+					Data_conf input_conf, Data_conf output_conf) {	
 	int in_h = input_conf.h;
 	int in_w = input_conf.w;
 	int in_c = input_conf.c;
@@ -40,6 +63,7 @@ void conv_relu_forward(float ***in, float ***out, float ****filter, Conv_conf co
 	int out_h = output_conf.h;
 	int out_w = output_conf.w;
 	int out_c = output_conf.c;
+
 	print_conf_cfg(conv_conf, input_conf, output_conf);
 	high_resolution_clock::time_point t1 = high_resolution_clock::now();
 	// long long count = 0;
@@ -153,12 +177,10 @@ void relu_forward(float ***in, float ***out, Data_conf input_conf) {
 	for (int i = 0; i < input_conf.h; i++) {
 		for (int j = 0; j < input_conf.w; j++) {
 			for (int k = 0; k < input_conf.c; k++) {
-				// std::cout<<"relu"<<std::endl;
 				out[i][j][k] = std::fmax(in[i][j][k], 0);
 			}
 		}
 	}
-	// std::cout<<"relu"<<std::endl;
 }
 
 void linearize_conv(float ***in, float *out, float **filter, Data_conf input_conf, int out_size) {
@@ -182,7 +204,6 @@ void linearize_conv(float ***in, float *out, float **filter, Data_conf input_con
 void fc_forward(float *in, float *out, float **filter,int input_size, int output_size) {
 	for (int i = 0; i < input_size; i++) {
 		for (int j = 0; j < output_size; j++) {
-			// std::cout<<"fc2"<<std::endl;
 			out[j] += in[i] * filter[i][j];
 		}
 	}
