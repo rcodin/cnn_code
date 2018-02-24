@@ -45,11 +45,19 @@ void conv_im2col(float *in, float *out, float *filter, Conv_conf conv_conf,
 	float *patch_mat = (float *)mkl_malloc(input_conf.h * input_conf.w * input_conf.c * 
 		conv_conf.h * conv_conf.w * sizeof(float), 32);
 	
+	int size = input_conf.h * input_conf.w * input_conf.c;
+
+	for (int i = 0; i < size; i++) {
+		in[i] = i + 1;
+	}
 	im2col_cpu(in, channels, height, width, ksize, stride, pad, patch_mat);
 	
+	for (int j = 0; j < size * conv_conf.h * conv_conf.w; j++) {
+		std::cout<<patch_mat[j]<<std::endl;
+	}
 	//gemmm
 	//use intel cblas gemm to start with
-
+	// cblas_sgemm();
 
 
 }
