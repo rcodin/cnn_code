@@ -82,3 +82,11 @@ void print_fc_cfg(int input_cfg, int output_cfg) {
 void free_mem(void *ptr) {
 	free(ptr);
 }
+void replicate_across_cols(float *input, float *output, int rows, int cols) {
+	for (int r = 0; r < rows; r++) {
+		int val = input[r];
+		for (int c = 0; c < cols; c++) {
+			output[r * cols + c] = val;
+		}
+	}
+}

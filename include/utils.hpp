@@ -13,5 +13,5 @@ void *alloc_4D(int i, int j, int k, int l, size_t bytes);
 void free_mem(void *ptr);
 
 void print_conf_cfg(Conv_conf cfg, Data_conf input_cfg, Data_conf output_cfg);
-
+void replicate_across_cols(float *input, float *output, int rows, int cols);
 #endif

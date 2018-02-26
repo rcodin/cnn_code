@@ -170,6 +170,12 @@ int main() {
 	float ****conv52_filter = (float ****)alloc_4D(output52_conf.c, conv52_conf.h, conv52_conf.w, input52_conf.c, bytes);
 	float ****conv53_filter = (float ****)alloc_4D(output53_conf.c, conv53_conf.h, conv53_conf.w, input53_conf.c, bytes);
 
+
+	float ****conv51_biases = (float ****)alloc_4D(output51_conf.c, conv51_conf.h, conv51_conf.w, input51_conf.c, bytes);
+	float ****conv52_biases = (float ****)alloc_4D(output52_conf.c, conv52_conf.h, conv52_conf.w, input52_conf.c, bytes);
+	float ****conv53_biases = (float ****)alloc_4D(output53_conf.c, conv53_conf.h, conv53_conf.w, input53_conf.c, bytes);
+
+
 	float **fc1_filter = (float **)alloc_2D(input6_conf.h * input6_conf.w * input6_conf.c, output6_conf , bytes);
 	float **fc2_filter = (float **)alloc_2D(input7_conf, output7_conf, bytes);
 	float **fc3_filter = (float **)alloc_2D(input8_conf, output8_conf, bytes);

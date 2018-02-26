@@ -33,7 +33,7 @@ void conv_forward(float ***in, float ***out, float ****filter, Conv_conf conv_co
 		}
 	}
 }
-void conv_im2col(float *in, float *out, float *filter, Conv_conf conv_conf,
+void conv_im2col(float *in, float *out, float *weights, float *biases, Conv_conf conv_conf,
 					Data_conf input_conf, Data_conf output_conf) {
 	int pad = conv_conf.h / 2;
 	int channels = input_conf.c;
@@ -45,21 +45,29 @@ void conv_im2col(float *in, float *out, float *filter, Conv_conf conv_conf,
 	float *patch_mat = (float *)mkl_malloc(input_conf.h * input_conf.w * input_conf.c * 
 		conv_conf.h * conv_conf.w * sizeof(float), 32);
 	
-	int size = input_conf.h * input_conf.w * input_conf.c;
-
-	for (int i = 0; i < size; i++) {
-		in[i] = i + 1;
-	}
 	im2col_cpu(in, channels, height, width, ksize, stride, pad, patch_mat);
 	
-	for (int j = 0; j < size * conv_conf.h * conv_conf.w; j++) {
-		std::cout<<patch_mat[j]<<std::endl;
-	}
+
+	//initialize output matrix 
+	replicate_across_cols(biases, out, output_conf.c, output_conf.h * output_conf.w);
 	//gemmm
 	//use intel cblas gemm to start with
 	// cblas_sgemm();
-
-
+	CBLAS_LAYOUT layout = CblasRowMajor;
+	CBLAS_TRANSPOSE transa = CblasNoTrans;
+	CBLAS_TRANSPOSE transb = CblasNoTrans;
+	MKL_INT m = output_conf.c;
+	MKL_INT n = input_conf.h * input_conf.w;
+	MKL_INT k = input_conf.c * conv_conf.h * conv_conf.w;
+	float alpha = 1;
+	const float *a = weights;
+	MKL_INT lda = k;
+	float *b = patch_mat;
+	MKL_INT ldb = n;
+	float beta = 1;
+	float *c = out;
+	MKL_INT ldc = n;
+	cblas_sgemm(layout, transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c, ldc);
 }
 
 void conv_relu_forward(float ***in, float ***out, float ****filter, Conv_conf conv_conf,

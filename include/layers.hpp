@@ -46,7 +46,7 @@ void linearize_conv(float ***in, float *out, float **filter,
 void fc_forward(float *in, float *out, float **filter, int input_size, 
 			int output_size);
 
-void conv_im2col(float *in, float *out, float *filter, Conv_conf conv_conf,
+void conv_im2col(float *in, float *out, float *weights, float *biases, Conv_conf conv_conf,
 					Data_conf input_conf, Data_conf output_conf);
 
 // using namespace std;
