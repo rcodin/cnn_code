@@ -5,6 +5,7 @@
 #include <tiling.hpp>
 #include <utils.hpp>
 #include <mkl.h>
+#include <cnpy.hpp>
 
 int main() {
 	//224x224x3 Conv
@@ -187,7 +188,9 @@ int main() {
 	float *conv53_biases = (float *)mkl_malloc(output53_conf.c  * bytes,  alignment);
 
 
-
+	//load it into a new array
+    cnpy::NpyArray arr = cnpy::npy_load("/home/ronit/Videos/npy/conv1_1_b.npy");
+    float *loaded_data = arr.data<float>();
 
 	float **fc1_filter = (float **)alloc_2D(input6_conf.h * input6_conf.w * input6_conf.c, output6_conf , bytes);
 	float **fc2_filter = (float **)alloc_2D(input7_conf, output7_conf, bytes);
