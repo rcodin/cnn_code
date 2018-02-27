@@ -148,43 +148,43 @@ int main() {
 
 
 	//allocating filers
-	float *conv11_weights = (float *)alloc_4D(output11_conf.c * conv11_conf.h * conv11_conf.w * input11_conf.c * bytes,  alignment);
-	float *conv12_weights = (float *)alloc_4D(output12_conf.c * conv12_conf.h * conv12_conf.w * input12_conf.c * bytes,  alignment);
+	float *conv11_weights = (float *)mkl_malloc(output11_conf.c * conv11_conf.h * conv11_conf.w * input11_conf.c * bytes,  alignment);
+	float *conv12_weights = (float *)mkl_malloc(output12_conf.c * conv12_conf.h * conv12_conf.w * input12_conf.c * bytes,  alignment);
 
-	float *conv21_weights = (float *)alloc_4D(output21_conf.c * conv21_conf.h * conv21_conf.w * input21_conf.c * bytes,  alignment);
-	float *conv22_weights = (float *)alloc_4D(output22_conf.c * conv22_conf.h * conv22_conf.w * input22_conf.c * bytes,  alignment);
+	float *conv21_weights = (float *)mkl_malloc(output21_conf.c * conv21_conf.h * conv21_conf.w * input21_conf.c * bytes,  alignment);
+	float *conv22_weights = (float *)mkl_malloc(output22_conf.c * conv22_conf.h * conv22_conf.w * input22_conf.c * bytes,  alignment);
 
-	float *conv31_weights = (float *)alloc_4D(output31_conf.c * conv31_conf.h * conv31_conf.w * input31_conf.c * bytes,  alignment);
-	float *conv32_weights = (float *)alloc_4D(output32_conf.c * conv32_conf.h * conv32_conf.w * input32_conf.c * bytes,  alignment);
-	float *conv33_weights = (float *)alloc_4D(output33_conf.c * conv32_conf.h * conv32_conf.w * input33_conf.c * bytes,  alignment);
+	float *conv31_weights = (float *)mkl_malloc(output31_conf.c * conv31_conf.h * conv31_conf.w * input31_conf.c * bytes,  alignment);
+	float *conv32_weights = (float *)mkl_malloc(output32_conf.c * conv32_conf.h * conv32_conf.w * input32_conf.c * bytes,  alignment);
+	float *conv33_weights = (float *)mkl_malloc(output33_conf.c * conv32_conf.h * conv32_conf.w * input33_conf.c * bytes,  alignment);
 
-	float *conv41_weights = (float *)alloc_4D(output41_conf.c * conv41_conf.h * conv41_conf.w * input41_conf.c * bytes,  alignment);
-	float *conv42_weights = (float *)alloc_4D(output42_conf.c * conv42_conf.h * conv42_conf.w * input42_conf.c * bytes,  alignment);
-	float *conv43_weights = (float *)alloc_4D(output43_conf.c * conv43_conf.h * conv43_conf.w * input43_conf.c * bytes,  alignment);
+	float *conv41_weights = (float *)mkl_malloc(output41_conf.c * conv41_conf.h * conv41_conf.w * input41_conf.c * bytes,  alignment);
+	float *conv42_weights = (float *)mkl_malloc(output42_conf.c * conv42_conf.h * conv42_conf.w * input42_conf.c * bytes,  alignment);
+	float *conv43_weights = (float *)mkl_malloc(output43_conf.c * conv43_conf.h * conv43_conf.w * input43_conf.c * bytes,  alignment);
 
-	float *conv51_weights = (float *)alloc_4D(output51_conf.c * conv51_conf.h * conv51_conf.w * input51_conf.c * bytes,  alignment);
-	float *conv52_weights = (float *)alloc_4D(output52_conf.c * conv52_conf.h * conv52_conf.w * input52_conf.c * bytes,  alignment);
-	float *conv53_weights = (float *)alloc_4D(output53_conf.c * conv53_conf.h * conv53_conf.w * input53_conf.c * bytes,  alignment);
+	float *conv51_weights = (float *)mkl_malloc(output51_conf.c * conv51_conf.h * conv51_conf.w * input51_conf.c * bytes,  alignment);
+	float *conv52_weights = (float *)mkl_malloc(output52_conf.c * conv52_conf.h * conv52_conf.w * input52_conf.c * bytes,  alignment);
+	float *conv53_weights = (float *)mkl_malloc(output53_conf.c * conv53_conf.h * conv53_conf.w * input53_conf.c * bytes,  alignment);
 
 	//allocating biases
 
-	float *conv11_biases = (float *)alloc_4D(output11_conf.c  * bytes,  alignment);
-	float *conv12_biases = (float *)alloc_4D(output12_conf.c  * bytes,  alignment);
+	float *conv11_biases = (float *)mkl_malloc(output11_conf.c  * bytes,  alignment);
+	float *conv12_biases = (float *)mkl_malloc(output12_conf.c  * bytes,  alignment);
 
-	float *conv21_biases = (float *)alloc_4D(output21_conf.c  * bytes,  alignment);
-	float *conv22_biases = (float *)alloc_4D(output22_conf.c  * bytes,  alignment);
+	float *conv21_biases = (float *)mkl_malloc(output21_conf.c  * bytes,  alignment);
+	float *conv22_biases = (float *)mkl_malloc(output22_conf.c  * bytes,  alignment);
 
-	float *conv31_biases = (float *)alloc_4D(output31_conf.c  * bytes,  alignment);
-	float *conv32_biases = (float *)alloc_4D(output32_conf.c  * bytes,  alignment);
-	float *conv33_biases = (float *)alloc_4D(output33_conf.c  * bytes,  alignment);
+	float *conv31_biases = (float *)mkl_malloc(output31_conf.c  * bytes,  alignment);
+	float *conv32_biases = (float *)mkl_malloc(output32_conf.c  * bytes,  alignment);
+	float *conv33_biases = (float *)mkl_malloc(output33_conf.c  * bytes,  alignment);
 
-	float *conv41_biases = (float *)alloc_4D(output41_conf.c  * bytes,  alignment);
-	float *conv42_biases = (float *)alloc_4D(output42_conf.c  * bytes,  alignment);
-	float *conv43_biases = (float *)alloc_4D(output43_conf.c  * bytes,  alignment);
+	float *conv41_biases = (float *)mkl_malloc(output41_conf.c  * bytes,  alignment);
+	float *conv42_biases = (float *)mkl_malloc(output42_conf.c  * bytes,  alignment);
+	float *conv43_biases = (float *)mkl_malloc(output43_conf.c  * bytes,  alignment);
 
-	float *conv51_biases = (float *)alloc_4D(output51_conf.c  * bytes,  alignment);
-	float *conv52_biases = (float *)alloc_4D(output52_conf.c  * bytes,  alignment);
-	float *conv53_biases = (float *)alloc_4D(output53_conf.c  * bytes,  alignment);
+	float *conv51_biases = (float *)mkl_malloc(output51_conf.c  * bytes,  alignment);
+	float *conv52_biases = (float *)mkl_malloc(output52_conf.c  * bytes,  alignment);
+	float *conv53_biases = (float *)mkl_malloc(output53_conf.c  * bytes,  alignment);
 
 
 
@@ -197,33 +197,33 @@ int main() {
 	//Group 1
 	conv_im2col(input11, output11, conv11_weights,conv11_biases, conv11_conf, input11_conf, output11_conf);
 	conv_im2col(output11, output12, conv12_weights,conv12_biases, conv12_conf, input12_conf, output12_conf);
-	pool_forward(output12, output13, input13_conf, pool1_conf);
+	// pool_forward(output12, output13, input13_conf, pool1_conf);
 
 	// //Group 2
 	conv_im2col(output13, output21, conv21_weights,conv21_biases, conv21_conf, input21_conf, output21_conf);
 	conv_im2col(output21, output22, conv22_weights,conv22_biases, conv22_conf, input22_conf, output22_conf);
-	pool_forward(output22, output23, input23_conf, pool2_conf);
+	// pool_forward(output22, output23, input23_conf, pool2_conf);
 
 	// //Group 3
 	conv_im2col(output23, output31, conv31_weights,conv31_biases, conv31_conf, input31_conf, output31_conf);
 	conv_im2col(output31, output32, conv32_weights,conv32_biases, conv32_conf, input32_conf, output32_conf);
 	conv_im2col(output32, output33, conv33_weights,conv33_biases, conv33_conf, input33_conf, output33_conf);
-	pool_forward(output33, output34, input34_conf, pool3_conf);
+	// pool_forward(output33, output34, input34_conf, pool3_conf);
 	
 	// //Group 4
 	conv_im2col(output34, output41, conv41_weights,conv41_biases, conv41_conf, input41_conf, output41_conf);
 	conv_im2col(output41, output42, conv42_weights,conv42_biases, conv42_conf, input42_conf, output42_conf);
 	conv_im2col(output42, output43, conv43_weights,conv43_biases, conv43_conf, input43_conf, output43_conf);
-	pool_forward(output43, output44, input44_conf, pool4_conf);
+	// pool_forward(output43, output44, input44_conf, pool4_conf);
 
 	// //Group 5
 	conv_im2col(output44, output51, conv51_weights,conv51_biases, conv51_conf, input51_conf, output51_conf);
 	conv_im2col(output51, output52, conv52_weights,conv52_biases, conv52_conf, input52_conf, output52_conf);
 	conv_im2col(output52, output53, conv53_weights,conv53_biases, conv53_conf, input53_conf, output53_conf);
-	pool_forward(output53, output54, input54_conf, pool5_conf);
+	// pool_forward(output53, output54, input54_conf, pool5_conf);
 
 	//fc1
-	linearize_conv(output54, output6, fc1_filter, input6_conf, output6_conf);
+	// linearize_conv(output54, output6, fc1_filter, input6_conf, output6_conf);
 	
 	//fc2
 	fc_forward(output6, output7, fc2_filter, input7_conf, output7_conf);
