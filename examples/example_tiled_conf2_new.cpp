@@ -120,8 +120,8 @@ int main()
 	Data_conf output33_conf = {36, 36, 256};
 	Pool_conf pool3_conf = {3, 3};
 
-	int h_num_tiles = 55;
-	int w_num_tiles = 55;
+	int h_num_tiles = 10;
+	int w_num_tiles = 10;
 
 	Data_conf output23_tiled_conf = {output23_conf.h/h_num_tiles, output23_conf.w/w_num_tiles, output23_conf.c};
 	Data_conf input23_tiled_conf = {output23_tiled_conf.h * pool2_conf.h, output23_tiled_conf.w * pool2_conf.w, output23_conf.c};
