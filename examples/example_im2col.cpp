@@ -189,8 +189,7 @@ int main() {
 
 
 	//load it into a new array
-    cnpy::NpyArray arr = cnpy::npy_load("/home/ronit/Videos/npy/conv1_1_b.npy");
-    float *loaded_data = arr.data<float>();
+
 
 	float **fc1_filter = (float **)alloc_2D(input6_conf.h * input6_conf.w * input6_conf.c, output6_conf , bytes);
 	float **fc2_filter = (float **)alloc_2D(input7_conf, output7_conf, bytes);
