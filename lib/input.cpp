@@ -7,15 +7,17 @@
 #include <vector>
 #include <string>
 #include <input.hpp>
+#include <iostream>
 
 using namespace cv;
 
 //read and put the image in data
-int read_image_rgb(std::string filename, image_cfg cfg, std::vector<float> &data) {
+int read_image_rgb(std::string filename, Image_cfg cfg, std::vector<float> &data) {
 	Mat img, mat = Mat::zeros(cfg.rows, cfg.cols, CV_8UC3);
 
     img = imread(filename, CV_LOAD_IMAGE_COLOR);
-    
+    std::cout<<"dsds"<<std::endl;
+    while(1);
     uchar *array;
 
     if(! img.data )                              // Check for invalid input
@@ -34,5 +36,10 @@ int read_image_rgb(std::string filename, image_cfg cfg, std::vector<float> &data
 			data.insert(data.end(), mat.ptr<float>(i), mat.ptr<float>(i)+mat.cols);
 		}
 	}
+	for (int i = 0; i < data.size(); i++) {
+		std::cout<<data[i]<<std::endl;
+	}
+	std::cout<<data.size()<<std::endl;
+
 	return 0;
 }

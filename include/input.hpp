@@ -8,9 +8,9 @@ struct Input3D {
 	float ***data;	
 };
 
-struct image_cfg {
+struct Image_cfg {
 	int rows;
 	int cols;
 };
-int read_image_rgb(std::string filename, image_cfg cfg, std::vector<float> &data);
+int read_image_rgb(std::string filename, Image_cfg cfg, std::vector<float> &data);
 #endif

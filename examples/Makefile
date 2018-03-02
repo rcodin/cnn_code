@@ -1,4 +1,5 @@
 CFLAGS = -std=c++11
+INCLUDE_PATH = -I../include
 FLAGS = -lcnn -fopenmp -lz
 INTEL_FLAGS = -mkl
 OPENCV_FLAGS = -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs
@@ -13,6 +14,6 @@ example_conf1:
 example_im2col:
 	icpc -I../include $(CFLAGS) example_im2col.cpp -o im2col.exec $(FLAGS)
 example_npy:
-	g++ -I../include $(CFLAGS) example_npy.cpp -o npy.exec $(FLAGS)
+	g++  $(CFLAGS) example_npy.cpp -o npy.exec $(FLAGS)
 image_read:
-	g++ $(CFLAGS) read_image.cpp -o read_img.exec  $(OPENCV_FLAGS)
+	icpc $(INCLUDE_PATH) $(CFLAGS) read_image.cpp -o read_img.exec $(FLAGS) $(OPENCV_FLAGS)

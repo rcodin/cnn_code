@@ -5,6 +5,9 @@
 #include <vector>
 #include <opencv2/opencv.hpp>
 
+
+#include <input.hpp>
+
 using namespace cv;
 using namespace std;
 
@@ -16,16 +19,18 @@ int read_config(int argc, char** argv, string &weight_file, string &image_file) 
         cerr<<"Error: invalid options"<<endl;
         return -1;
     }
-    for (int i = 1; i < argc; i++) {
-        if (argv[i] == '-i') {
+    for (int i = 1; i < argc; i += 2) {
+        // cout<<"mana"<<argv[i]<<"mana"<<std::endl;
+        if (argv[i] == "-i") {
             image_file = argv[i + 1];
-            i++;
+            // i++;
         }
-        else if (argv[i] == '-w') {
+        else if (argv[i] == "-w") {
             weight_file = argv[i + 1];
-            i++;
+            // i++;
         }
         else {
+            // cout<<argv[i]<<std::endl;
             return -1;
         }
     }
@@ -34,14 +39,24 @@ int read_config(int argc, char** argv, string &weight_file, string &image_file) 
 
 int main(int argc, char** argv)
 {
+    int err;
     string weight_file;
     string image_file;
 
-    int err = read_config(argc, argv, weight_file, image_file);
+    err = read_config(argc, argv, weight_file, image_file);
 
     if (err) {
         return -1;
     }
 
-    vector<float> input = 
+    vector<float> input;
+
+    Image_cfg input_cfg = {224, 224};
+
+    err = read_image_rgb(image_file, input_cfg, input);
+
+    if (err) {
+        return -1;
+    }
+    
 }
