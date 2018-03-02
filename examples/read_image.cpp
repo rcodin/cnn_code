@@ -8,36 +8,40 @@
 using namespace cv;
 using namespace std;
 
-int main()
-{
-    Mat img, mat = Mat::zeros(224,224, CV_8UC3);
-
-    img = imread("/home/ronit/project/benchmark/vgg_16/tensorflow/laska.png", CV_LOAD_IMAGE_COLOR);
+// -i input
+// -w weights
+int read_config(int argc, char** argv, string &weight_file, string &image_file) {
     
-    uchar *array;
+    if (argc != 5) {
+        cerr<<"Error: invalid options"<<endl;
+        return -1;
+    }
+    for (int i = 1; i < argc; i++) {
+        if (argv[i] == '-i') {
+            image_file = argv[i + 1];
+            i++;
+        }
+        else if (argv[i] == '-w') {
+            weight_file = argv[i + 1];
+            i++;
+        }
+        else {
+            return -1;
+        }
+    }
+    return 0;
+}
 
-    if(! img.data )                              // Check for invalid input
-    {
-        cout <<  "Could not open or find the image" << std::endl ;
+int main(int argc, char** argv)
+{
+    string weight_file;
+    string image_file;
+
+    int err = read_config(argc, argv, weight_file, image_file);
+
+    if (err) {
         return -1;
     }
 
-    resize(img, mat, Size(224, 224), 0, 0, INTER_LINEAR);
-
-    if (mat.isContinuous()) {
-        array = mat.data;
-        for (int i = 0; i < mat.rows * mat.cols * 3 + 1; i++) {
-            cout<<(float)array[i]<<endl;
-        }
-        cout<<"Data is continuous"<<endl;
-        cout<<"mat dimention: "<<img.step<<endl;
-        cout<<"Size of dats is : "<<mat.rows * mat.cols<<endl;
-    }
-
-
-    // namedWindow( "Display window", WINDOW_AUTOSIZE );// Create a window for display.
-    // imshow( "Display window", mat);                   // Show our image inside it.
-
-    // waitKey(0);                                          // Wait for a keystroke in the window
-    return 0;
+    vector<float> input = 
 }
