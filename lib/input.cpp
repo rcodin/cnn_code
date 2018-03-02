@@ -12,13 +12,10 @@
 using namespace cv;
 
 //read and put the image in data
-int read_image_rgb(std::string filename, Image_cfg cfg, std::vector<float> &data) {
+int read_image_rgb(std::string filename, Image_cfg cfg, float *data) {
 	Mat img, mat = Mat::zeros(cfg.rows, cfg.cols, CV_8UC3);
 
     img = imread(filename, CV_LOAD_IMAGE_COLOR);
-    std::cout<<"dsds"<<std::endl;
-    while(1);
-    uchar *array;
 
     if(! img.data )                              // Check for invalid input
     {
@@ -28,18 +25,19 @@ int read_image_rgb(std::string filename, Image_cfg cfg, std::vector<float> &data
 
     resize(img, mat, Size(cfg.rows, cfg.cols), 0, 0, INTER_LINEAR);
 
+	std::vector<uchar> array;
 	if (mat.isContinuous()) {
-		data.assign((float*)mat.datastart, (float*)mat.dataend);
+  		array.assign(mat.datastart, mat.dataend);
 	}
 	else {
-		for (int i = 0; i < mat.rows; ++i) {
-			data.insert(data.end(), mat.ptr<float>(i), mat.ptr<float>(i)+mat.cols);
-		}
+  		for (int i = 0; i < mat.rows; ++i) {
+    		array.insert(array.end(), mat.ptr<uchar>(i), mat.ptr<uchar>(i)+mat.cols);
+  		}
 	}
-	for (int i = 0; i < data.size(); i++) {
-		std::cout<<data[i]<<std::endl;
+
+	for (int i = 0; i < array.size(); i++) {
+		data[i] = (float)array[i];
 	}
-	std::cout<<data.size()<<std::endl;
 
 	return 0;
 }
