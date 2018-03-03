@@ -2,3 +2,14 @@
 * Make the layer implementations more general
 * Create a memory manager that takes input dimentions and neural network description and automatically allocates and deallocates the layers
 * Make a module which calculates the tiled input and output sizes for each layer based on last fused layer
+
+* support stride in pooling operation
+#results
+
+3 layer fusion
+fusion with im2col
+make the code clean and proper
+
+#ideas
+
+* fc layer lazy loading for the huge weight

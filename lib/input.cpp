@@ -17,7 +17,7 @@ int read_image_rgb(std::string filename, Image_cfg cfg, float *data) {
 
     img = imread(filename, CV_LOAD_IMAGE_COLOR);
 
-    if(! img.data )                              // Check for invalid input
+    if(! img.data)                             // Check for invalid input
     {
         std::cout <<  "Could not open or find the image" << std::endl ;
         return -1;

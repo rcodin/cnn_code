@@ -9,11 +9,14 @@
 struct Conv_conf {
 	int h;
 	int w;
+	int stride;
+	int pad;
 };
 
 struct Pool_conf {
 	int h;
 	int w;
+	int stride;
 };
 
 struct Data_conf {
