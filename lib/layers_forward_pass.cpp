@@ -97,7 +97,6 @@ void relu_forward(float *in, float *out, Data_conf input_conf) {
 		for (int j = 0; j < input_conf.w; j++) {
 			for (int k = 0; k < input_conf.c; k++) {
 				int idx = (i * input_conf.w + j) * input_conf.c + k;
-				
 				out[idx] = std::fmax(in[idx], 0);
 			}
 		}
