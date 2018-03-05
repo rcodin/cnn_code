@@ -55,8 +55,9 @@ int main(int argc, char** argv)
         return -1;
     }
 
-        size_t bytes = sizeof(float);
+    size_t bytes = sizeof(float);
     int alignment = bytes * 8;
+    
     //create input 
     //conv1->relu->pool
 

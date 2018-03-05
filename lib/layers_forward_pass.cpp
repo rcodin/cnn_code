@@ -50,9 +50,7 @@ void conv_im2col(float *in, float *out, float *weights, float *biases, Conv_conf
 
 	//initialize output matrix 
 	replicate_across_cols(biases, out, output_conf.c, output_conf.h * output_conf.w);
-	//gemmm
-	//use intel cblas gemm to start with
-	// cblas_sgemm();
+
 	CBLAS_LAYOUT layout = CblasRowMajor;
 	CBLAS_TRANSPOSE transa = CblasNoTrans;
 	CBLAS_TRANSPOSE transb = CblasNoTrans;

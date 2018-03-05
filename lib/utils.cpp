@@ -90,3 +90,25 @@ void replicate_across_cols(float *input, float *output, int rows, int cols) {
 		}
 	}
 }
+
+int read_config(int argc, char** argv, std::string &weight_file, std::string &image_file) {
+    
+    if (argc != 5) {
+        std::cerr<<"Error: invalid options"<<std::endl;
+        return -1;
+    }
+    std::string i_str ("-i");
+    std::string w_str ("-w");
+    for (int i = 1; i < argc; i += 2) {
+        if (i_str.compare(argv[i])) {
+            image_file = argv[i + 1];
+        }
+        else if (w_str.compare(argv[i])) {
+            weight_file = argv[i + 1];
+        }
+        else {
+            return -1;
+        }
+    }
+    return 0;
+}
