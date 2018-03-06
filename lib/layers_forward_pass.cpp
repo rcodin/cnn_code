@@ -46,12 +46,8 @@ void conv_im2col(float *in, float *out, float *weights, float *biases, Conv_conf
 	
 	im2col_cpu(in, channels, height, width, ksize, stride, pad, patch_mat);
 	
-
-	//initialize output matrix 
 	replicate_across_cols(biases, out, output_conf.c, output_conf.h * output_conf.w);
-	//gemmm
-	//use intel cblas gemm to start with
-	// cblas_sgemm();
+
 	CBLAS_LAYOUT layout = CblasRowMajor;
 	CBLAS_TRANSPOSE transa = CblasNoTrans;
 	CBLAS_TRANSPOSE transb = CblasNoTrans;
@@ -103,16 +99,42 @@ void relu_forward(float *in, float *out, Data_conf input_conf) {
 	}
 }
 
-void fc_forward(float *in, float *out, float *filter, int input_size, int output_size) {
+void fc_forward(float *in, float *out, float *weights, float *biases, int input_size, int output_size) {
+	std::cout<<"["<<input_size<<"x"<<output_size<<"]"<<std::endl;
+
+	for (int i = 0; i < output_size; i++)
+		out[i] = biases[i];
+
 	for (int i = 0; i < input_size; i++) {
 		for (int j = 0; j < output_size; j++) {
-			out[j] += in[i] * filter[i * input_size +  j];
+			out[j] += in[i] * weights[i * output_size +  j];
 		}
 	}
 }
 
+void fc_softmax_forward(float *in, float *out, float *weights, float *biases, int input_size, int output_size) {
+	std::cout<<"["<<input_size<<"x"<<output_size<<"]"<<std::endl;
+	float tot = 0;
 
-void softmax_forward(float *in, float *out, float *filter, int input_size, int output_size) {
+	for (int i = 0; i < output_size; i++)
+		out[i] = biases[i];
+	
+	for (int i = 0; i < input_size; i++) {
+		for (int j = 0; j < output_size; j++) {
+			out[j] += in[i] * weights[i * output_size +  j];
+		}
+	}
+	for (int i = 0; i < output_size; i++) {
+		out[i] = exp(out[i]);
+		tot += out[i];
+	}
+
+	for (int j = 0; j < output_size; j++) {
+		out[j] = out[j]/tot;
+	}
+}
+
+void softmax_forward(float *in, float *out, int input_size, int output_size) {
 	float tot = 0;
 
 	for (int i = 0; i < input_size; i++) {

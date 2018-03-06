@@ -12,7 +12,7 @@ example_conf1:
 	g++ -I../include $(CFLAGS) example_conf1.cpp -o conf1.exec $(FLAGS)
 	g++ -I../include $(CFLAGS) example_tiled_conf1_new.cpp -o conf1_tiled.exec $(FLAGS)
 example_im2col:
-	icpc -I../include $(CFLAGS) example_im2col.cpp -o im2col.exec $(FLAGS)
+	icpc -I../include $(CFLAGS) example_im2col.cpp -o im2col.exec $(INTEL_FLAGS) $(FLAGS)
 example_npy:
 	g++  $(CFLAGS) example_npy.cpp -o npy.exec $(FLAGS)
 image_read:

@@ -180,6 +180,10 @@ int main() {
 	float **fc2_filter = (float **)alloc_2D(input7_conf, output7_conf, bytes);
 	float **fc3_filter = (float **)alloc_2D(input8_conf, output8_conf, bytes);
 	
+
+
+
+	
 	//Group 1
 	conv_relu_forward(input11, output11, conv11_filter, conv11_conf, input11_conf, output11_conf);
 	conv_relu_forward(output11, output12, conv12_filter, conv12_conf, input12_conf, output12_conf);
@@ -215,5 +219,7 @@ int main() {
 	fc_forward(output6, output7, fc2_filter, input7_conf, output7_conf);
 	
 	//fc3
-	fc_forward(output7, output8, fc3_filter, input8_conf, output8_conf);
+	fc_softmax_forward(output7, output8, fc3_filter, input8_conf, output8_conf);
+
+	// softmax_forward();
 }

@@ -2,10 +2,11 @@
 #include <cstdlib>
 #include <stdint.h>
 #include <layers.hpp>
-#include <tiling.hpp>
 #include <utils.hpp>
 #include <mkl.h>
 #include <cnpy.hpp>
+#include <input.hpp>
+#include <iomanip>
 
 int main() {
 	//224x224x3 Conv
@@ -16,13 +17,13 @@ int main() {
 	//conv1->relu->pool
 
 		//Conv11
-		Conv_conf conv11_conf = {3, 3};
+		Conv_conf conv11_conf = {3, 3, 1, 1};
 		Data_conf input11_conf = {224, 224, 3};
 		Data_conf output11_conf = {224, 224, 64};
 
 		
 		//conv12
-		Conv_conf conv12_conf = {3, 3};
+		Conv_conf conv12_conf = {3, 3, 1, 1};
 		Data_conf input12_conf = {224, 224, 64};
 		Data_conf output12_conf = {224, 224, 64};
 
@@ -32,12 +33,12 @@ int main() {
 		Data_conf output13_conf = {112, 112, 64};
 
 		//Conv21
-		Conv_conf conv21_conf = {3, 3};	
+		Conv_conf conv21_conf = {3, 3, 1, 1};
 		Data_conf input21_conf = {112, 112, 64};
 		Data_conf output21_conf = {112, 112, 128};
 
 		//Conv22
-		Conv_conf conv22_conf = {3, 3};
+		Conv_conf conv22_conf = {3, 3, 1, 1};
 		Data_conf input22_conf = {112, 112, 128};
 		Data_conf output22_conf = {112, 112, 128};
 
@@ -48,17 +49,17 @@ int main() {
 
 
 		//Conv31
-		Conv_conf conv31_conf = {3, 3};	
+		Conv_conf conv31_conf = {3, 3, 1, 1};
 		Data_conf input31_conf = {56, 56, 128};
 		Data_conf output31_conf = {56, 56, 256};
 
 		//Conv32
-		Conv_conf conv32_conf = {3, 3};	
+		Conv_conf conv32_conf = {3, 3, 1, 1};
 		Data_conf input32_conf = {56, 56, 256};
 		Data_conf output32_conf = {56, 56, 256};
 
 		//Conv33
-		Conv_conf conv33_conf = {3, 3};	
+		Conv_conf conv33_conf = {3, 3, 1, 1};
 		Data_conf input33_conf = {56, 56, 256};
 		Data_conf output33_conf = {56, 56, 256};
 
@@ -68,17 +69,17 @@ int main() {
 		Data_conf output34_conf = {28, 28, 256};
 
 		//Conv41
-		Conv_conf conv41_conf = {3, 3};	
+		Conv_conf conv41_conf = {3, 3, 1, 1};
 		Data_conf input41_conf = {28, 28, 256};
 		Data_conf output41_conf = {28, 28, 512};
 
 		//Conv42
-		Conv_conf conv42_conf = {3, 3};	
+		Conv_conf conv42_conf = {3, 3, 1, 1};
 		Data_conf input42_conf = {28, 28, 512};
 		Data_conf output42_conf = {28, 28, 512};
 
 		//Conv43
-		Conv_conf conv43_conf = {3, 3};	
+		Conv_conf conv43_conf = {3, 3, 1, 1};
 		Data_conf input43_conf = {28, 28, 512};
 		Data_conf output43_conf = {28, 28, 512};
 
@@ -88,22 +89,22 @@ int main() {
 		Data_conf output44_conf = {14, 14, 512};
 
 		//Conv51
-		Conv_conf conv51_conf = {3, 3};	
+		Conv_conf conv51_conf = {3, 3, 1, 1};
 		Data_conf input51_conf = {14, 14, 512};
 		Data_conf output51_conf = {14, 14, 512};
 
 		//Conv52
-		Conv_conf conv52_conf = {3, 3};	
+		Conv_conf conv52_conf = {3, 3, 1, 1};
 		Data_conf input52_conf = {14, 14, 512};
 		Data_conf output52_conf = {14, 14, 512};
 
 		//Conv53
-		Conv_conf conv53_conf = {3, 3};	
+		Conv_conf conv53_conf = {3, 3, 1, 1};
 		Data_conf input53_conf = {14, 14, 512};
 		Data_conf output53_conf = {14, 14, 512};
 
 		//Pool5
-		Pool_conf pool5_conf = {3, 3};
+		Pool_conf pool5_conf = {2, 2};
 		Data_conf input54_conf = {14, 14, 512};
 		Data_conf output54_conf = {7, 7, 512};	
 
@@ -143,9 +144,9 @@ int main() {
 	float *output53 = (float *)mkl_malloc(output53_conf.h * output53_conf.w * output53_conf.c*bytes, alignment);
 	float *output54 = (float *)mkl_malloc(output54_conf.h * output54_conf.w * output54_conf.c*bytes, alignment);
 
-	float *output6 = (float *)alloc_1D(output6_conf, bytes);
-	float *output7 = (float *)alloc_1D(output7_conf, bytes);
-	float *output8 = (float *)alloc_1D(output8_conf, bytes);
+	float *output6 = (float *)mkl_malloc(output6_conf * bytes, alignment);
+	float *output7 = (float *)mkl_malloc(output7_conf * bytes, alignment);
+	float *output8 = (float *)mkl_malloc(output8_conf * bytes, alignment);
 
 
 	//allocating filers
@@ -187,62 +188,155 @@ int main() {
 	float *conv52_biases = (float *)mkl_malloc(output52_conf.c  * bytes,  alignment);
 	float *conv53_biases = (float *)mkl_malloc(output53_conf.c  * bytes,  alignment);
 
-
 	//load it into a new array
-
-
-	float **fc1_filter = (float **)alloc_2D(input6_conf.h * input6_conf.w * input6_conf.c, output6_conf , bytes);
-	float **fc2_filter = (float **)alloc_2D(input7_conf, output7_conf, bytes);
-	float **fc3_filter = (float **)alloc_2D(input8_conf, output8_conf, bytes);
+	float *fc1_filter = (float *)mkl_malloc(input6_conf.h * input6_conf.w * input6_conf.c * output6_conf * bytes, alignment);
+	float *fc2_filter = (float *)mkl_malloc(input7_conf * output7_conf * bytes, alignment);
+	float *fc3_filter = (float *)mkl_malloc(input8_conf * output8_conf * bytes, alignment);
 	
 
+	//load image
+
+    std::string weight_dir = "/home/roni/project/files/vgg_16/tensorflow/weights_dir/";
+    std::string image_file = "/home/roni/project/files/vgg_16/tensorflow/laska.png";
+
+    Image_cfg input_cfg = {224, 224};
+    // float *input = (float *)malloc(input_cfg.rows * input_cfg.cols * 3);
+
+    int err = read_image_rgb(image_file, input_cfg, input11);
+
+    if (err) {
+    	std::cerr<<"Error: unable to read file"<<std::endl;
+    	return -1;
+    }
+
+	//load conv weights
+    cnpy::NpyArray arr = cnpy::npy_load(weight_dir+"conv1_1_W.npy");
+	conv11_weights = arr.data<float>();
+
+	arr = cnpy::npy_load(weight_dir+"conv1_2_W.npy");
+	conv12_weights = arr.data<float>();
+
+	arr = cnpy::npy_load(weight_dir+"conv2_1_W.npy");
+	conv21_weights = arr.data<float>();
+
+	float *temp;
+	cnpy::NpyArray arr5 = cnpy::npy_load(weight_dir+"conv2_2_W.npy");
+	conv22_weights = arr5.data<float>();
+
+	for (int i = 0; i < output22_conf.c * conv22_conf.h * conv22_conf.w * input22_conf.c; i++) {
+		// std::cout<<std::fixed << std::setw( 11 ) << std::setprecision( 11 )<<temp[i]<<std::endl;
+		// std::cout << std::Double(-2.203e-15) << std::endl;
+		// printf("%f\n", conv22_weights[i]);
+		// conv22_weights[i] = temp[i];
+	}
+
+	// std::cout<<conv22_weights[(output21_conf.c * conv21_conf.h * conv21_conf.w * input21_conf.c) - 1]<<std::endl;
+
+	cnpy::NpyArray arr31 = cnpy::npy_load(weight_dir+"conv3_1_W.npy");
+	conv31_weights = arr31.data<float>();
+
+	cnpy::NpyArray arr32 = cnpy::npy_load(weight_dir+"conv3_2_W.npy");
+	conv32_weights = arr32.data<float>();
+
+	cnpy::NpyArray arr33 = cnpy::npy_load(weight_dir+"conv3_3_W.npy");
+	conv33_weights = arr33.data<float>();
+
+	cnpy::NpyArray arr41 = cnpy::npy_load(weight_dir+"conv4_1_W.npy");
+	conv41_weights = arr41.data<float>();
+
+	cnpy::NpyArray arr42 = cnpy::npy_load(weight_dir+"conv4_2_W.npy");
+	conv42_weights = arr42.data<float>();
+
+	cnpy::NpyArray arr43 = cnpy::npy_load(weight_dir+"conv4_3_W.npy");
+	conv43_weights = arr43.data<float>();
+
+	cnpy::NpyArray arr51 = cnpy::npy_load(weight_dir+"conv5_1_W.npy");
+	conv51_weights = arr51.data<float>();
+
+	cnpy::NpyArray arr52 = cnpy::npy_load(weight_dir+"conv5_2_W.npy");
+	conv52_weights = arr52.data<float>();
+
+	cnpy::NpyArray arr53 = cnpy::npy_load(weight_dir+"conv5_3_W.npy");
+	conv53_weights = arr53.data<float>();
+
+	// load conv biases
+    cnpy::NpyArray arr11_bias = cnpy::npy_load(weight_dir+"conv1_1_b.npy");
+	conv11_biases = arr11_bias.data<float>();
+
+	cnpy::NpyArray arr12_bias = cnpy::npy_load(weight_dir+"conv1_2_b.npy");
+	conv12_biases = arr12_bias.data<float>();
+
+	cnpy::NpyArray arr21_bias = cnpy::npy_load(weight_dir+"conv2_1_b.npy");
+	conv21_biases = arr21_bias.data<float>();
+
+	cnpy::NpyArray arr22_bias = cnpy::npy_load(weight_dir+"conv2_2_b.npy");
+	conv22_biases = arr22_bias.data<float>();
+
+	cnpy::NpyArray arr31_bias = cnpy::npy_load(weight_dir+"conv3_1_b.npy");
+	conv31_biases = arr31_bias.data<float>();
+
+	cnpy::NpyArray arr32_bias = cnpy::npy_load(weight_dir+"conv3_2_b.npy");
+	conv32_biases = arr32_bias.data<float>();
+
+	cnpy::NpyArray arr33_bias = cnpy::npy_load(weight_dir+"conv3_3_b.npy");
+	conv33_biases = arr33_bias.data<float>();
+
+	cnpy::NpyArray arr41_bias = cnpy::npy_load(weight_dir+"conv4_1_b.npy");
+	conv41_biases = arr41_bias.data<float>();
+
+	cnpy::NpyArray arr42_bias = cnpy::npy_load(weight_dir+"conv4_2_b.npy");
+	conv42_biases = arr42_bias.data<float>();
+
+	cnpy::NpyArray arr43_bias = cnpy::npy_load(weight_dir+"conv4_3_b.npy");
+	conv43_biases = arr43_bias.data<float>();
+
+	cnpy::NpyArray arr51_bias = cnpy::npy_load(weight_dir+"conv5_1_b.npy");
+	conv51_biases = arr51_bias.data<float>();
+
+	cnpy::NpyArray arr52_bias = cnpy::npy_load(weight_dir+"conv5_2_b.npy");
+	conv52_biases = arr52_bias.data<float>();
+
+	cnpy::NpyArray arr53_bias = cnpy::npy_load(weight_dir+"conv5_3_b.npy");
+	conv53_biases = arr53_bias.data<float>();
+
+
+	std::cout<<"sdds"<<std::endl;
 	//Group 1
 	conv_im2col(input11, output11, conv11_weights,conv11_biases, conv11_conf, input11_conf, output11_conf);
 	conv_im2col(output11, output12, conv12_weights,conv12_biases, conv12_conf, input12_conf, output12_conf);
-	// pool_forward(output12, output13, input13_conf, pool1_conf);
+	pool_forward(output12, output13, input13_conf, input21_conf,pool1_conf);
 
-	// //Group 2
+	//Group 2
 	conv_im2col(output13, output21, conv21_weights,conv21_biases, conv21_conf, input21_conf, output21_conf);
 	conv_im2col(output21, output22, conv22_weights,conv22_biases, conv22_conf, input22_conf, output22_conf);
-	// pool_forward(output22, output23, input23_conf, pool2_conf);
+	pool_forward(output22, output23, input23_conf, input31_conf, pool2_conf);
 
 	// //Group 3
 	conv_im2col(output23, output31, conv31_weights,conv31_biases, conv31_conf, input31_conf, output31_conf);
 	conv_im2col(output31, output32, conv32_weights,conv32_biases, conv32_conf, input32_conf, output32_conf);
 	conv_im2col(output32, output33, conv33_weights,conv33_biases, conv33_conf, input33_conf, output33_conf);
-	// pool_forward(output33, output34, input34_conf, pool3_conf);
+	pool_forward(output33, output34, input34_conf, input41_conf, pool3_conf);
 	
-	// //Group 4
+	// Group 4
 	conv_im2col(output34, output41, conv41_weights,conv41_biases, conv41_conf, input41_conf, output41_conf);
 	conv_im2col(output41, output42, conv42_weights,conv42_biases, conv42_conf, input42_conf, output42_conf);
 	conv_im2col(output42, output43, conv43_weights,conv43_biases, conv43_conf, input43_conf, output43_conf);
-	// pool_forward(output43, output44, input44_conf, pool4_conf);
+	pool_forward(output43, output44, input44_conf, input41_conf, pool4_conf);
 
-	// //Group 5
+	// Group 5
 	conv_im2col(output44, output51, conv51_weights,conv51_biases, conv51_conf, input51_conf, output51_conf);
 	conv_im2col(output51, output52, conv52_weights,conv52_biases, conv52_conf, input52_conf, output52_conf);
 	conv_im2col(output52, output53, conv53_weights,conv53_biases, conv53_conf, input53_conf, output53_conf);
-	// pool_forward(output53, output54, input54_conf, pool5_conf);
+	pool_forward(output53, output54, input54_conf, input6_conf,pool5_conf);
 
-	//fc1
-	// linearize_conv(output54, output6, fc1_filter, input6_conf, output6_conf);
+	// // fc1
+	// fc_forward(output54, output6, fc1_filter, input6_conf.h * input6_conf.w * input6_conf.c,
+	// 				output6_conf);
+	// //fc2
+	// fc_forward(output6, output7, fc2_filter, input7_conf, output7_conf);
 	
-	//fc2
-	fc_forward(output6, output7, fc2_filter, input7_conf, output7_conf);
-	
-	//fc3
-	fc_forward(output7, output8, fc3_filter, input8_conf, output8_conf);
-
-	// Conv_conf conv11_conf = {3, 3};
-	// Data_conf input11_conf = {224, 224, 3};
-	// Data_conf output11_conf = {224, 224, 64};
-
-	// float *in = (float *)mkl_malloc(input11_conf.h * output11_conf.w * input11_conf.c * sizeof(float), 32);
-	// float *out = (float *)mkl_malloc(output11_conf.h * output11_conf.w * output11_conf.c * sizeof(float), 32);
-	// float *weights = (float *)mkl_malloc(output11_conf.c * conv11_conf.h * conv11_conf.w * input11_conf.c * sizeof(float), 32);
-	// float *biases = (float *)mkl_malloc(output11_conf.c * sizeof(float), 32);
-	
-	// conv_im2col(in, out, weights, biases,conv11_conf, input11_conf, output11_conf);
+	// //fc3
+	// fc_softmax_forward(output7, output8, fc3_filter, input8_conf, output8_conf);
 
 
 	return 0;
