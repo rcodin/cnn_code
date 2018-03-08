@@ -15,24 +15,24 @@ using namespace cv;
 int read_image_rgb(std::string filename, Image_cfg cfg, float *data) {
 	Mat img, mat = Mat::zeros(cfg.rows, cfg.cols, CV_8UC3);
 
-    img = imread(filename, CV_LOAD_IMAGE_COLOR);
+  img = imread(filename, CV_LOAD_IMAGE_COLOR);
+  cvtColor(img, img, CV_RGB2BGR);
+  if(! img.data)                             // Check for invalid input
+  {
+    std::cout <<  "Could not open or find the image" << std::endl ;
+    return -1;
+  }
 
-    if(! img.data)                             // Check for invalid input
-    {
-        std::cout <<  "Could not open or find the image" << std::endl ;
-        return -1;
-    }
-
-    resize(img, mat, Size(cfg.rows, cfg.cols), 0, 0, INTER_LINEAR);
+  resize(img, mat, Size(cfg.rows, cfg.cols), 0, 0, INTER_LINEAR);
 
 	std::vector<uchar> array;
 	if (mat.isContinuous()) {
   		array.assign(mat.datastart, mat.dataend);
 	}
 	else {
-  		for (int i = 0; i < mat.rows; ++i) {
-    		array.insert(array.end(), mat.ptr<uchar>(i), mat.ptr<uchar>(i)+mat.cols);
-  		}
+		for (int i = 0; i < mat.rows; ++i) {
+  		array.insert(array.end(), mat.ptr<uchar>(i), mat.ptr<uchar>(i)+mat.cols);
+		}
 	}
 
 	for (int i = 0; i < array.size(); i++) {

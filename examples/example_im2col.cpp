@@ -150,49 +150,54 @@ int main() {
 
 
 	//allocating filers
-	float *conv11_weights = (float *)mkl_malloc(output11_conf.c * conv11_conf.h * conv11_conf.w * input11_conf.c * bytes,  alignment);
-	float *conv12_weights = (float *)mkl_malloc(output12_conf.c * conv12_conf.h * conv12_conf.w * input12_conf.c * bytes,  alignment);
+	float *conv11_weights; //= (float *)mkl_malloc(output11_conf.c * conv11_conf.h * conv11_conf.w * input11_conf.c * bytes,  alignment);
+	float *conv12_weights; //= (float *)mkl_malloc(output12_conf.c * conv12_conf.h * conv12_conf.w * input12_conf.c * bytes,  alignment);
 
-	float *conv21_weights = (float *)mkl_malloc(output21_conf.c * conv21_conf.h * conv21_conf.w * input21_conf.c * bytes,  alignment);
-	float *conv22_weights = (float *)mkl_malloc(output22_conf.c * conv22_conf.h * conv22_conf.w * input22_conf.c * bytes,  alignment);
+	float *conv21_weights; //= (float *)mkl_malloc(output21_conf.c * conv21_conf.h * conv21_conf.w * input21_conf.c * bytes,  alignment);
+	float *conv22_weights; //= (float *)mkl_malloc(output22_conf.c * conv22_conf.h * conv22_conf.w * input22_conf.c * bytes,  alignment);
 
-	float *conv31_weights = (float *)mkl_malloc(output31_conf.c * conv31_conf.h * conv31_conf.w * input31_conf.c * bytes,  alignment);
-	float *conv32_weights = (float *)mkl_malloc(output32_conf.c * conv32_conf.h * conv32_conf.w * input32_conf.c * bytes,  alignment);
-	float *conv33_weights = (float *)mkl_malloc(output33_conf.c * conv32_conf.h * conv32_conf.w * input33_conf.c * bytes,  alignment);
+	float *conv31_weights; //= (float *)mkl_malloc(output31_conf.c * conv31_conf.h * conv31_conf.w * input31_conf.c * bytes,  alignment);
+	float *conv32_weights; //= (float *)mkl_malloc(output32_conf.c * conv32_conf.h * conv32_conf.w * input32_conf.c * bytes,  alignment);
+	float *conv33_weights; //= (float *)mkl_malloc(output33_conf.c * conv32_conf.h * conv32_conf.w * input33_conf.c * bytes,  alignment);
 
-	float *conv41_weights = (float *)mkl_malloc(output41_conf.c * conv41_conf.h * conv41_conf.w * input41_conf.c * bytes,  alignment);
-	float *conv42_weights = (float *)mkl_malloc(output42_conf.c * conv42_conf.h * conv42_conf.w * input42_conf.c * bytes,  alignment);
-	float *conv43_weights = (float *)mkl_malloc(output43_conf.c * conv43_conf.h * conv43_conf.w * input43_conf.c * bytes,  alignment);
+	float *conv41_weights; //= (float *)mkl_malloc(output41_conf.c * conv41_conf.h * conv41_conf.w * input41_conf.c * bytes,  alignment);
+	float *conv42_weights; //= (float *)mkl_malloc(output42_conf.c * conv42_conf.h * conv42_conf.w * input42_conf.c * bytes,  alignment);
+	float *conv43_weights; //= (float *)mkl_malloc(output43_conf.c * conv43_conf.h * conv43_conf.w * input43_conf.c * bytes,  alignment);
 
-	float *conv51_weights = (float *)mkl_malloc(output51_conf.c * conv51_conf.h * conv51_conf.w * input51_conf.c * bytes,  alignment);
-	float *conv52_weights = (float *)mkl_malloc(output52_conf.c * conv52_conf.h * conv52_conf.w * input52_conf.c * bytes,  alignment);
-	float *conv53_weights = (float *)mkl_malloc(output53_conf.c * conv53_conf.h * conv53_conf.w * input53_conf.c * bytes,  alignment);
+	float *conv51_weights; //= (float *)mkl_malloc(output51_conf.c * conv51_conf.h * conv51_conf.w * input51_conf.c * bytes,  alignment);
+	float *conv52_weights; //= (float *)mkl_malloc(output52_conf.c * conv52_conf.h * conv52_conf.w * input52_conf.c * bytes,  alignment);
+	float *conv53_weights; //= (float *)mkl_malloc(output53_conf.c * conv53_conf.h * conv53_conf.w * input53_conf.c * bytes,  alignment);
 
 	//allocating biases
 
-	float *conv11_biases = (float *)mkl_malloc(output11_conf.c  * bytes,  alignment);
-	float *conv12_biases = (float *)mkl_malloc(output12_conf.c  * bytes,  alignment);
+	float *conv11_biases; //= (float *)mkl_malloc(output11_conf.c  * bytes,  alignment);
+	float *conv12_biases; //= (float *)mkl_malloc(output12_conf.c  * bytes,  alignment);
 
-	float *conv21_biases = (float *)mkl_malloc(output21_conf.c  * bytes,  alignment);
-	float *conv22_biases = (float *)mkl_malloc(output22_conf.c  * bytes,  alignment);
+	float *conv21_biases; //= (float *)mkl_malloc(output21_conf.c  * bytes,  alignment);
+	float *conv22_biases; //= (float *)mkl_malloc(output22_conf.c  * bytes,  alignment);
 
-	float *conv31_biases = (float *)mkl_malloc(output31_conf.c  * bytes,  alignment);
-	float *conv32_biases = (float *)mkl_malloc(output32_conf.c  * bytes,  alignment);
-	float *conv33_biases = (float *)mkl_malloc(output33_conf.c  * bytes,  alignment);
+	float *conv31_biases; //= (float *)mkl_malloc(output31_conf.c  * bytes,  alignment);
+	float *conv32_biases; //= (float *)mkl_malloc(output32_conf.c  * bytes,  alignment);
+	float *conv33_biases; //= (float *)mkl_malloc(output33_conf.c  * bytes,  alignment);
 
-	float *conv41_biases = (float *)mkl_malloc(output41_conf.c  * bytes,  alignment);
-	float *conv42_biases = (float *)mkl_malloc(output42_conf.c  * bytes,  alignment);
-	float *conv43_biases = (float *)mkl_malloc(output43_conf.c  * bytes,  alignment);
+	float *conv41_biases; //= (float *)mkl_malloc(output41_conf.c  * bytes,  alignment);
+	float *conv42_biases; //= (float *)mkl_malloc(output42_conf.c  * bytes,  alignment);
+	float *conv43_biases; //= (float *)mkl_malloc(output43_conf.c  * bytes,  alignment);
 
-	float *conv51_biases = (float *)mkl_malloc(output51_conf.c  * bytes,  alignment);
-	float *conv52_biases = (float *)mkl_malloc(output52_conf.c  * bytes,  alignment);
-	float *conv53_biases = (float *)mkl_malloc(output53_conf.c  * bytes,  alignment);
+	float *conv51_biases; //= (float *)mkl_malloc(output51_conf.c  * bytes,  alignment);
+	float *conv52_biases; //= (float *)mkl_malloc(output52_conf.c  * bytes,  alignment);
+	float *conv53_biases; //= (float *)mkl_malloc(output53_conf.c  * bytes,  alignment);
 
-	//load it into a new array
-	float *fc1_filter = (float *)mkl_malloc(input6_conf.h * input6_conf.w * input6_conf.c * output6_conf * bytes, alignment);
-	float *fc2_filter = (float *)mkl_malloc(input7_conf * output7_conf * bytes, alignment);
-	float *fc3_filter = (float *)mkl_malloc(input8_conf * output8_conf * bytes, alignment);
+	//load fc weights into a new array
+	float *fc1_weights;// = (float *)mkl_malloc(input6_conf.h * input6_conf.w * input6_conf.c * output6_conf * bytes, alignment);
+	float *fc2_weights;// = (float *)mkl_malloc(input7_conf * output7_conf * bytes, alignment);
+	float *fc3_weights;// = (float *)mkl_malloc(input8_conf * output8_conf * bytes, alignment);
 	
+
+	//load fc biases into a new array
+	float *fc1_biases;
+	float *fc2_biases;
+	float *fc3_biases;
 
 	//load image
 
@@ -210,18 +215,18 @@ int main() {
     }
 
 	//load conv weights
-    cnpy::NpyArray arr = cnpy::npy_load(weight_dir+"conv1_1_W.npy");
-	conv11_weights = arr.data<float>();
+    cnpy::NpyArray arr11 = cnpy::npy_load(weight_dir+"conv1_1_W.npy");
+	conv11_weights = arr11.data<float>();
 
-	arr = cnpy::npy_load(weight_dir+"conv1_2_W.npy");
-	conv12_weights = arr.data<float>();
+	cnpy::NpyArray arr12 = cnpy::npy_load(weight_dir+"conv1_2_W.npy");
+	conv12_weights = arr12.data<float>();
 
-	arr = cnpy::npy_load(weight_dir+"conv2_1_W.npy");
-	conv21_weights = arr.data<float>();
+	cnpy::NpyArray arr21 = cnpy::npy_load(weight_dir+"conv2_1_W.npy");
+	conv21_weights = arr21.data<float>();
 
-	float *temp;
-	cnpy::NpyArray arr5 = cnpy::npy_load(weight_dir+"conv2_2_W.npy");
-	conv22_weights = arr5.data<float>();
+	// float *temp;
+	cnpy::NpyArray arr22 = cnpy::npy_load(weight_dir+"conv2_2_W.npy");
+	conv22_weights = arr22.data<float>();
 
 	// std::cout<<conv22_weights[(output21_conf.c * conv21_conf.h * conv21_conf.w * input21_conf.c) - 1]<<std::endl;
 
@@ -253,84 +258,140 @@ int main() {
 	conv53_weights = arr53.data<float>();
 
 	// load conv biases
-    cnpy::NpyArray arr11_bias = cnpy::npy_load(weight_dir+"conv1_1_b.npy");
-	conv11_biases = arr11_bias.data<float>();
+    cnpy::NpyArray arr11_biases = cnpy::npy_load(weight_dir+"conv1_1_b.npy");
+	conv11_biases = arr11_biases.data<float>();
 
-	cnpy::NpyArray arr12_bias = cnpy::npy_load(weight_dir+"conv1_2_b.npy");
-	conv12_biases = arr12_bias.data<float>();
+	cnpy::NpyArray arr12_biases = cnpy::npy_load(weight_dir+"conv1_2_b.npy");
+	conv12_biases = arr12_biases.data<float>();
 
-	cnpy::NpyArray arr21_bias = cnpy::npy_load(weight_dir+"conv2_1_b.npy");
-	conv21_biases = arr21_bias.data<float>();
+	cnpy::NpyArray arr21_biases = cnpy::npy_load(weight_dir+"conv2_1_b.npy");
+	conv21_biases = arr21_biases.data<float>();
 
-	cnpy::NpyArray arr22_bias = cnpy::npy_load(weight_dir+"conv2_2_b.npy");
-	conv22_biases = arr22_bias.data<float>();
+	cnpy::NpyArray arr22_biases = cnpy::npy_load(weight_dir+"conv2_2_b.npy");
+	conv22_biases = arr22_biases.data<float>();
 
-	cnpy::NpyArray arr31_bias = cnpy::npy_load(weight_dir+"conv3_1_b.npy");
-	conv31_biases = arr31_bias.data<float>();
+	cnpy::NpyArray arr31_biases = cnpy::npy_load(weight_dir+"conv3_1_b.npy");
+	conv31_biases = arr31_biases.data<float>();
 
-	cnpy::NpyArray arr32_bias = cnpy::npy_load(weight_dir+"conv3_2_b.npy");
-	conv32_biases = arr32_bias.data<float>();
+	cnpy::NpyArray arr32_biases = cnpy::npy_load(weight_dir+"conv3_2_b.npy");
+	conv32_biases = arr32_biases.data<float>();
 
-	cnpy::NpyArray arr33_bias = cnpy::npy_load(weight_dir+"conv3_3_b.npy");
-	conv33_biases = arr33_bias.data<float>();
+	cnpy::NpyArray arr33_biases = cnpy::npy_load(weight_dir+"conv3_3_b.npy");
+	conv33_biases = arr33_biases.data<float>();
 
-	cnpy::NpyArray arr41_bias = cnpy::npy_load(weight_dir+"conv4_1_b.npy");
-	conv41_biases = arr41_bias.data<float>();
+	cnpy::NpyArray arr41_biases = cnpy::npy_load(weight_dir+"conv4_1_b.npy");
+	conv41_biases = arr41_biases.data<float>();
 
-	cnpy::NpyArray arr42_bias = cnpy::npy_load(weight_dir+"conv4_2_b.npy");
-	conv42_biases = arr42_bias.data<float>();
+	cnpy::NpyArray arr42_biases = cnpy::npy_load(weight_dir+"conv4_2_b.npy");
+	conv42_biases = arr42_biases.data<float>();
 
-	cnpy::NpyArray arr43_bias = cnpy::npy_load(weight_dir+"conv4_3_b.npy");
-	conv43_biases = arr43_bias.data<float>();
+	cnpy::NpyArray arr43_biases = cnpy::npy_load(weight_dir+"conv4_3_b.npy");
+	conv43_biases = arr43_biases.data<float>();
 
-	cnpy::NpyArray arr51_bias = cnpy::npy_load(weight_dir+"conv5_1_b.npy");
-	conv51_biases = arr51_bias.data<float>();
+	cnpy::NpyArray arr51_biases = cnpy::npy_load(weight_dir+"conv5_1_b.npy");
+	conv51_biases = arr51_biases.data<float>();
 
-	cnpy::NpyArray arr52_bias = cnpy::npy_load(weight_dir+"conv5_2_b.npy");
-	conv52_biases = arr52_bias.data<float>();
+	cnpy::NpyArray arr52_biases = cnpy::npy_load(weight_dir+"conv5_2_b.npy");
+	conv52_biases = arr52_biases.data<float>();
 
-	cnpy::NpyArray arr53_bias = cnpy::npy_load(weight_dir+"conv5_3_b.npy");
-	conv53_biases = arr53_bias.data<float>();
+	cnpy::NpyArray arr53_biases = cnpy::npy_load(weight_dir+"conv5_3_b.npy");
+	conv53_biases = arr53_biases.data<float>();
+
+
+	//fc layer weights
+	cnpy::NpyArray arr6_weights = cnpy::npy_load(weight_dir+"fc6_W.npy");
+	fc1_weights = arr6_weights.data<float>();
+
+	cnpy::NpyArray arr7_weights = cnpy::npy_load(weight_dir+"fc7_W.npy");
+	fc2_weights = arr7_weights.data<float>();
+
+	cnpy::NpyArray arr8_weights = cnpy::npy_load(weight_dir+"fc8_W.npy");
+	fc3_weights = arr8_weights.data<float>();
+
+	//fc layer biases
+	cnpy::NpyArray arr6_biases = cnpy::npy_load(weight_dir+"fc6_b.npy");
+	fc1_biases = arr6_biases.data<float>();
+
+	cnpy::NpyArray arr7_biases = cnpy::npy_load(weight_dir+"fc7_b.npy");
+	fc2_biases = arr7_biases.data<float>();
+
+	cnpy::NpyArray arr8_biases = cnpy::npy_load(weight_dir+"fc8_b.npy");
+	fc3_biases = arr8_biases.data<float>();
 
 
 	std::cout<<"sdds"<<std::endl;
+	// std::cout<<output11[0]<<std::endl;
 	//Group 1
-	conv_im2col(input11, output11, conv11_weights,conv11_biases, conv11_conf, input11_conf, output11_conf);
-	conv_im2col(output11, output12, conv12_weights,conv12_biases, conv12_conf, input12_conf, output12_conf);
+
+	//patch 1 original value
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 2; j++) {
+			int idx = (i * input11_conf.w + j) * input11_conf.c;
+			std::cout<<input11[idx + 0]<<" "<<input11[idx + 1]<<" "<<input11[idx + 2]<<std::endl;
+		}
+	}
+
+	float *patch_mat = patch_ret(input11, output11, conv11_weights,conv11_biases, conv11_conf, input11_conf, output11_conf);
+	// for (int i )
+	float out = conv11_biases[0];
+
+	for (int i = 0; i < 64 * 27; i++) {
+		std::cout<<conv11_weights[i]<<std::endl;
+	}
+
+	// for (int i = 0; i < (input11_conf.c * conv11_conf.h * conv11_conf.w); i++) {
+	// 	out += patch_mat[i * (input11_conf.h * input11_conf.w) + 1000] * conv11_weights[i * output11_conf.c];
+	// 	std::cout<<patch_mat[i * (input11_conf.h * input11_conf.w) + 1000] * conv11_weights[i * output11_conf.c]<<std::endl;
+	// }
+	std::cout<<out<<std::endl;	
+	conv_im2row(input11, output11, conv11_weights,conv11_biases, conv11_conf, input11_conf, output11_conf);
+
+	// std::cout<<output11[0]<<std::endl;
+
+	// for (int i = 0; i < 10000; i++) {
+	// 	std::cout<<output11[i]<<std::endl;
+	// 	// std::cout<<conv11_weights[i]<<std::endl;
+	// }
+
+	conv_im2row(output11, output12, conv12_weights,conv12_biases, conv12_conf, input12_conf, output12_conf);
 	pool_forward(output12, output13, input13_conf, input21_conf,pool1_conf);
 
 	//Group 2
-	conv_im2col(output13, output21, conv21_weights,conv21_biases, conv21_conf, input21_conf, output21_conf);
-	conv_im2col(output21, output22, conv22_weights,conv22_biases, conv22_conf, input22_conf, output22_conf);
+	conv_im2row(output13, output21, conv21_weights,conv21_biases, conv21_conf, input21_conf, output21_conf);
+	conv_im2row(output21, output22, conv22_weights,conv22_biases, conv22_conf, input22_conf, output22_conf);
 	pool_forward(output22, output23, input23_conf, input31_conf, pool2_conf);
 
 	// //Group 3
-	conv_im2col(output23, output31, conv31_weights,conv31_biases, conv31_conf, input31_conf, output31_conf);
-	conv_im2col(output31, output32, conv32_weights,conv32_biases, conv32_conf, input32_conf, output32_conf);
-	conv_im2col(output32, output33, conv33_weights,conv33_biases, conv33_conf, input33_conf, output33_conf);
+	conv_im2row(output23, output31, conv31_weights,conv31_biases, conv31_conf, input31_conf, output31_conf);
+	conv_im2row(output31, output32, conv32_weights,conv32_biases, conv32_conf, input32_conf, output32_conf);
+	conv_im2row(output32, output33, conv33_weights,conv33_biases, conv33_conf, input33_conf, output33_conf);
 	pool_forward(output33, output34, input34_conf, input41_conf, pool3_conf);
 	
 	// Group 4
-	conv_im2col(output34, output41, conv41_weights,conv41_biases, conv41_conf, input41_conf, output41_conf);
-	conv_im2col(output41, output42, conv42_weights,conv42_biases, conv42_conf, input42_conf, output42_conf);
-	conv_im2col(output42, output43, conv43_weights,conv43_biases, conv43_conf, input43_conf, output43_conf);
+	conv_im2row(output34, output41, conv41_weights,conv41_biases, conv41_conf, input41_conf, output41_conf);
+	conv_im2row(output41, output42, conv42_weights,conv42_biases, conv42_conf, input42_conf, output42_conf);
+	conv_im2row(output42, output43, conv43_weights,conv43_biases, conv43_conf, input43_conf, output43_conf);
 	pool_forward(output43, output44, input44_conf, input41_conf, pool4_conf);
 
 	// Group 5
-	conv_im2col(output44, output51, conv51_weights,conv51_biases, conv51_conf, input51_conf, output51_conf);
-	conv_im2col(output51, output52, conv52_weights,conv52_biases, conv52_conf, input52_conf, output52_conf);
-	conv_im2col(output52, output53, conv53_weights,conv53_biases, conv53_conf, input53_conf, output53_conf);
+	conv_im2row(output44, output51, conv51_weights,conv51_biases, conv51_conf, input51_conf, output51_conf);
+	conv_im2row(output51, output52, conv52_weights,conv52_biases, conv52_conf, input52_conf, output52_conf);
+	conv_im2row(output52, output53, conv53_weights,conv53_biases, conv53_conf, input53_conf, output53_conf);
 	pool_forward(output53, output54, input54_conf, input6_conf,pool5_conf);
 
+
 	// fc1
-	fc_forward(output54, output6, fc1_filter, input6_conf.h * input6_conf.w * input6_conf.c,
+	fc_forward(output54, output6, fc1_weights, fc1_biases, input6_conf.h * input6_conf.w * input6_conf.c,
 					output6_conf);
 	//fc2
-	fc_forward(output6, output7, fc2_filter, input7_conf, output7_conf);
+	fc_forward(output6, output7, fc2_weights, fc2_biases,input7_conf, output7_conf);
 	
 	//fc3
-	fc_softmax_forward(output7, output8, fc3_filter, input8_conf, output8_conf);
+	fc_softmax_forward(output7, output8, fc3_weights, fc3_biases, input8_conf, output8_conf);
+	// while(1);
+	int idx = get_highest_prob(output8, output8_conf);
 
+	std::cout<<"Highest prob class is : "<<idx<<std::endl;
 
 	return 0;
 }

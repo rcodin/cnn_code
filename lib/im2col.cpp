@@ -11,7 +11,7 @@ float im2col_get_pixel(float *im, int height, int width, int channels,
 
     if (row < 0 || col < 0 ||
         row >= height || col >= width) return 0;
-    return im[col + width*(row + height*channel)];
+    return im[channel + channels*(col + row*width)];
 }
 
 //From Berkeley Vision's Caffe!
@@ -26,9 +26,10 @@ void im2col_cpu(float* data_im,
 
     int channels_col = channels * ksize * ksize;
     for (c = 0; c < channels_col; ++c) {
-        int w_offset = c % ksize;
-        int h_offset = (c / ksize) % ksize;
-        int c_im = c / ksize / ksize;
+        int w_offset = (c / ksize) % ksize;
+        int h_offset = c / ksize / ksize;
+        int c_im = c % ksize;
+        
         for (h = 0; h < height_col; ++h) {
             for (w = 0; w < width_col; ++w) {
                 int im_row = h_offset + h * stride;

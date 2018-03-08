@@ -90,3 +90,26 @@ void replicate_across_cols(float *input, float *output, int rows, int cols) {
 		}
 	}
 }
+
+void replicate_across_rows(float *input, float *output, int rows, int cols) {
+	for (int r = 0; r < rows; r++) {
+		// int val = input[r];
+		for (int c = 0; c < cols; c++) {
+			output[r * cols + c] = input[c];
+		}
+	}
+}
+
+float get_highest_prob(float *data, int data_size) {
+
+	unsigned int max_idx;
+	float max = -5.0f;
+	for (int i = 0; i < data_size; i++) {
+		if (max < data[i]) {
+			max = data[i];
+			max_idx = i;
+			// std::cout<<data[i]<<std::endl;
+		}
+	}
+	return max_idx;
+}
