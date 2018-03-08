@@ -63,6 +63,16 @@ void conv_im2col(float *in, float *out, float *weights, float *biases, Conv_conf
 	float *c = out;
 	MKL_INT ldc = n;
 	cblas_sgemm(layout, transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c, ldc);
+
+	//relu
+	for (int i = 0; i < output_conf.h; i++) {
+		for (int j = 0; j < output_conf.w; j++) {
+			for (int k = 0; k < output_conf.c; k++) {
+				int idx = (i * output_conf.w + j) * output_conf.c + k;
+				out[idx] = std::fmax(out[idx], 0);
+			}
+		}
+	}
 }
 
 void pool_forward(float *in, float *out, Data_conf input_conf, Data_conf output_conf, Pool_conf pool_conf) {

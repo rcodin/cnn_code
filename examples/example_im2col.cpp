@@ -223,13 +223,6 @@ int main() {
 	cnpy::NpyArray arr5 = cnpy::npy_load(weight_dir+"conv2_2_W.npy");
 	conv22_weights = arr5.data<float>();
 
-	for (int i = 0; i < output22_conf.c * conv22_conf.h * conv22_conf.w * input22_conf.c; i++) {
-		// std::cout<<std::fixed << std::setw( 11 ) << std::setprecision( 11 )<<temp[i]<<std::endl;
-		// std::cout << std::Double(-2.203e-15) << std::endl;
-		// printf("%f\n", conv22_weights[i]);
-		// conv22_weights[i] = temp[i];
-	}
-
 	// std::cout<<conv22_weights[(output21_conf.c * conv21_conf.h * conv21_conf.w * input21_conf.c) - 1]<<std::endl;
 
 	cnpy::NpyArray arr31 = cnpy::npy_load(weight_dir+"conv3_1_W.npy");
@@ -329,14 +322,14 @@ int main() {
 	conv_im2col(output52, output53, conv53_weights,conv53_biases, conv53_conf, input53_conf, output53_conf);
 	pool_forward(output53, output54, input54_conf, input6_conf,pool5_conf);
 
-	// // fc1
-	// fc_forward(output54, output6, fc1_filter, input6_conf.h * input6_conf.w * input6_conf.c,
-	// 				output6_conf);
-	// //fc2
-	// fc_forward(output6, output7, fc2_filter, input7_conf, output7_conf);
+	// fc1
+	fc_forward(output54, output6, fc1_filter, input6_conf.h * input6_conf.w * input6_conf.c,
+					output6_conf);
+	//fc2
+	fc_forward(output6, output7, fc2_filter, input7_conf, output7_conf);
 	
-	// //fc3
-	// fc_softmax_forward(output7, output8, fc3_filter, input8_conf, output8_conf);
+	//fc3
+	fc_softmax_forward(output7, output8, fc3_filter, input8_conf, output8_conf);
 
 
 	return 0;
