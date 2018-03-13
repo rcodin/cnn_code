@@ -64,15 +64,15 @@ void conv_im2col(float *in, float *out, float *weights, float *biases, Conv_conf
 	MKL_INT ldc = n;
 	cblas_sgemm(layout, transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c, ldc);
 
-	// //relu
-	// for (int i = 0; i < output_conf.h; i++) {
-	// 	for (int j = 0; j < output_conf.w; j++) {
-	// 		for (int k = 0; k < output_conf.c; k++) {
-	// 			int idx = (i * output_conf.w + j) * output_conf.c + k;
-	// 			out[idx] = std::fmax(out[idx], 0);
-	// 		}
-	// 	}
-	// }
+	//relu
+	for (int i = 0; i < output_conf.h; i++) {
+		for (int j = 0; j < output_conf.w; j++) {
+			for (int k = 0; k < output_conf.c; k++) {
+				int idx = (i * output_conf.w + j) * output_conf.c + k;
+				out[idx] = std::fmax(out[idx], 0);
+			}
+		}
+	}
 }
 
 float *patch_ret(float *in, float *out, float *weights, float *biases, Conv_conf conv_conf,
@@ -101,16 +101,15 @@ void conv_im2row(float *in, float *out, float *weights, float *biases, Conv_conf
 	int ksize = conv_conf.h;
 	int stride = conv_conf.stride;
 
-	float *patch_mat = (float *)mkl_malloc(input_conf.h * input_conf.w * input_conf.c * 
-		conv_conf.h * conv_conf.w * sizeof(float), 32);
+	float *patch_mat = (float *)mkl_calloc(input_conf.h * input_conf.w * input_conf.c * 
+		conv_conf.h * conv_conf.w,  sizeof(float), 32);
 	
 	im2col_cpu(in, channels, height, width, ksize, stride, pad, patch_mat);
 	
-	replicate_across_rows(biases, out, output_conf.h * output_conf.w, output_conf.c);
 
 	CBLAS_LAYOUT layout = CblasRowMajor;
 	CBLAS_TRANSPOSE transa = CblasTrans;
-	CBLAS_TRANSPOSE transb = CblasTrans;
+	CBLAS_TRANSPOSE transb = CblasNoTrans;
 	MKL_INT m = input_conf.h * input_conf.w;
 	MKL_INT n = output_conf.c;
 	MKL_INT k = input_conf.c * conv_conf.h * conv_conf.w;
@@ -118,21 +117,23 @@ void conv_im2row(float *in, float *out, float *weights, float *biases, Conv_conf
 	const float *a = patch_mat;
 	MKL_INT lda = m;
 	float *b = weights;
-	MKL_INT ldb = k;
+	MKL_INT ldb = n;
 	float beta = 1;
 	float *c = out;
 	MKL_INT ldc = n;
 	cblas_sgemm(layout, transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c, ldc);
 
-	// // relu
-	// for (int i = 0; i < output_conf.h; i++) {
-	// 	for (int j = 0; j < output_conf.w; j++) {
-	// 		for (int k = 0; k < output_conf.c; k++) {
-	// 			int idx = (i * output_conf.w + j) * output_conf.c + k;
-	// 			out[idx] = std::fmax(out[idx], 0);
-	// 		}
-	// 	}
-	// }
+	replicate_across_rows(biases, out, output_conf.h * output_conf.w, output_conf.c);
+	// relu
+	for (int i = 0; i < output_conf.h; i++) {
+		for (int j = 0; j < output_conf.w; j++) {
+			for (int k = 0; k < output_conf.c; k++) {
+				int idx = (i * output_conf.w + j) * output_conf.c + k;
+				out[idx] = std::fmax(out[idx], 0);
+			}
+		}
+	}
+	mkl_free(patch_mat);
 }
 
 void pool_forward(float *in, float *out, Data_conf input_conf, Data_conf output_conf, Pool_conf pool_conf) {
@@ -170,7 +171,7 @@ void relu_forward(float *in, float *out, Data_conf input_conf) {
 }
 
 void fc_forward(float *in, float *out, float *weights, float *biases, int input_size, int output_size) {
-	std::cout<<"["<<input_size<<"x"<<output_size<<"]"<<std::endl;
+	// std::cout<<"["<<input_size<<"x"<<output_size<<"]"<<std::endl;
 
 	for (int i = 0; i < output_size; i++)
 		out[i] = biases[i];
@@ -183,7 +184,7 @@ void fc_forward(float *in, float *out, float *weights, float *biases, int input_
 }
 
 void fc_softmax_forward(float *in, float *out, float *weights, float *biases, int input_size, int output_size) {
-	std::cout<<"["<<input_size<<"x"<<output_size<<"]"<<std::endl;
+	// std::cout<<"["<<input_size<<"x"<<output_size<<"]"<<std::endl;
 	float tot = 0;
 
 	for (int i = 0; i < output_size; i++)

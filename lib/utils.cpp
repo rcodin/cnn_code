@@ -86,7 +86,7 @@ void replicate_across_cols(float *input, float *output, int rows, int cols) {
 	for (int r = 0; r < rows; r++) {
 		int val = input[r];
 		for (int c = 0; c < cols; c++) {
-			output[r * cols + c] = val;
+			output[r * cols + c] += val;
 		}
 	}
 }
@@ -95,7 +95,7 @@ void replicate_across_rows(float *input, float *output, int rows, int cols) {
 	for (int r = 0; r < rows; r++) {
 		// int val = input[r];
 		for (int c = 0; c < cols; c++) {
-			output[r * cols + c] = input[c];
+			output[r * cols + c] += input[c];
 		}
 	}
 }

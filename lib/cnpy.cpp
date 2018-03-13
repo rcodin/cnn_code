@@ -179,11 +179,11 @@ cnpy::NpyArray load_the_npy_file(FILE* fp) {
     size_t word_size;
     bool fortran_order;
     cnpy::parse_npy_header(fp,word_size,shape,fortran_order);
-    for (int i = 0; i < shape.size(); i++)
-        std::cout<<shape[i]<<std::endl;
+    // for (int i = 0; i < shape.size(); i++)
+    //     std::cout<<shape[i]<<std::endl;
     cnpy::NpyArray arr(shape, word_size, fortran_order);
     size_t nread = fread(arr.data<float>(), word_size,arr.num_bytes()/word_size,fp);
-    std::cout<<arr.num_bytes()<<std::endl;
+    // std::cout<<arr.num_bytes()<<std::endl;
 
     if(nread != (arr.num_bytes()/word_size))
         throw std::runtime_error("load_the_npy_file: failed fread");
