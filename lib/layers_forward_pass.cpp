@@ -146,11 +146,11 @@ void pool_forward(float *in, float *out, Data_conf input_conf, Data_conf output_
 
 				for (int i = 0; i < pool_conf.h; i++) {
 					for (int j = 0; j < pool_conf.w; j++) {
-						int in_idx = ((input_hidx + i) * input_conf.w + (input_widx + i)) * input_conf.c + input_cidx;
+						int in_idx = ((input_hidx + i) * input_conf.w + (input_widx + j)) * input_conf.c + input_cidx;
 						int out_idx = (h_idx * output_conf.w + w_idx) * output_conf.c + c_idx;
 
 						out[out_idx] =
-							std::fmax(out[out_idx], in[in_idx]);
+							std::fmaxf(out[out_idx], in[in_idx]);
 					}
 				}
 			}

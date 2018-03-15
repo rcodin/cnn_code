@@ -108,8 +108,8 @@ float get_highest_prob(float *data, int data_size) {
 		if (max < data[i]) {
 			max = data[i];
 			max_idx = i;
-			// std::cout<<data[i]<<std::endl;
 		}
+		// std::cout<<data[i]<<std::endl;
 	}
 	return max_idx;
 }

@@ -364,15 +364,30 @@ int main() {
 
 	conv_im2row(output11, output12, conv12_weights, conv12_biases, conv12_conf, input12_conf, output12_conf);
 
-	std::cout<<output12[1]<<std::endl;
+	// for (int i = 0; i < (output12_conf.h * output12_conf.w * output12_conf.c); i++)
+	// 	std::cout<<output12[i]<<std::endl;
 
-
+	// float out = 0.0f;
+	// for (int i = 1; i < conv12_conf.h; i++) {
+	// 	for (int j = 1; j < conv12_conf.w; j++) {
+	// 		for (int k = 0; k < input12_conf.c; k++) {
+	// 			out += output11[(( i - 1) * input12_conf.w + (j - 1)) * input12_conf.c + k] * 
+	// 					conv12_weights[(((i* conv12_conf.w + j) * input12_conf.c) + k) * output12_conf.c];
+	// 		}
+	// 	}
 	// }
+	
+	// std::cout<<out<<std::endl;
 
+	// std::cout<<output12[0]<<std::endl;
+	// std::cout<<output12[1]<<std::endl;
+	
+	for (int i = 0; i < (output12_conf.h * output12_conf.w * output12_conf.c); i++) {
+		std::cout<<std::fixed<<std::setprecision(10)<<output12[i]<<std::endl;
+	}
 	pool_forward(output12, output13, input13_conf, input21_conf,pool1_conf);
-	// for (int i = 0; i < 10; i++) {
-	// 	std::cout<<output13[i]<<std::endl;
-	// }
+
+	
 
 	//Group 2
 	conv_im2row(output13, output21, conv21_weights,conv21_biases, conv21_conf, input21_conf, output21_conf);
@@ -396,6 +411,7 @@ int main() {
 	conv_im2row(output51, output52, conv52_weights,conv52_biases, conv52_conf, input52_conf, output52_conf);
 	conv_im2row(output52, output53, conv53_weights,conv53_biases, conv53_conf, input53_conf, output53_conf);
 	pool_forward(output53, output54, input54_conf, input6_conf,pool5_conf);
+	
 
 
 	// fc1
