@@ -382,12 +382,11 @@ int main() {
 	// std::cout<<output12[0]<<std::endl;
 	// std::cout<<output12[1]<<std::endl;
 	
-	for (int i = 0; i < (output12_conf.h * output12_conf.w * output12_conf.c); i++) {
-		std::cout<<std::fixed<<std::setprecision(10)<<output12[i]<<std::endl;
-	}
+
 	pool_forward(output12, output13, input13_conf, input21_conf,pool1_conf);
 
-	
+	// for (int i = 0; i < (output13_conf.h * output13_conf.w * output13_conf.c); i++)
+	// 	std::cout<<std::fixed<<std::setprecision(10)<<output13[i]<<std::endl;	
 
 	//Group 2
 	conv_im2row(output13, output21, conv21_weights,conv21_biases, conv21_conf, input21_conf, output21_conf);
@@ -404,7 +403,9 @@ int main() {
 	conv_im2row(output34, output41, conv41_weights,conv41_biases, conv41_conf, input41_conf, output41_conf);
 	conv_im2row(output41, output42, conv42_weights,conv42_biases, conv42_conf, input42_conf, output42_conf);
 	conv_im2row(output42, output43, conv43_weights,conv43_biases, conv43_conf, input43_conf, output43_conf);
-	pool_forward(output43, output44, input44_conf, input41_conf, pool4_conf);
+	pool_forward(output43, output44, input44_conf, input51_conf, pool4_conf);
+
+	// for (int i = 0; i < 512; i++)
 
 	// Group 5
 	conv_im2row(output44, output51, conv51_weights,conv51_biases, conv51_conf, input51_conf, output51_conf);
@@ -412,7 +413,8 @@ int main() {
 	conv_im2row(output52, output53, conv53_weights,conv53_biases, conv53_conf, input53_conf, output53_conf);
 	pool_forward(output53, output54, input54_conf, input6_conf,pool5_conf);
 	
-
+	// for (int i = 0; i < (output54_conf.h * output54_conf.w * output54_conf.c); i++)
+	// 	std::cout<<std::fixed<<std::setprecision(10)<<output54[i]<<std::endl;
 
 	// fc1
 	fc_forward(output54, output6, fc1_weights, fc1_biases, input6_conf.h * input6_conf.w * input6_conf.c,
@@ -420,8 +422,12 @@ int main() {
 	//fc2
 	fc_forward(output6, output7, fc2_weights, fc2_biases,input7_conf, output7_conf);
 	
+
 	//fc3
 	fc_softmax_forward(output7, output8, fc3_weights, fc3_biases, input8_conf, output8_conf);
+
+	for (int i = 0; i < (output8_conf); i++)
+		std::cout<<std::fixed<<std::setprecision(10)<<output8[i]<<std::endl;
 	// while(1);
 	int idx = get_highest_prob(output8, output8_conf);
 

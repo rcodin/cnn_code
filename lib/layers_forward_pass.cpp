@@ -170,6 +170,7 @@ void relu_forward(float *in, float *out, Data_conf input_conf) {
 	}
 }
 
+//with relu
 void fc_forward(float *in, float *out, float *weights, float *biases, int input_size, int output_size) {
 	// std::cout<<"["<<input_size<<"x"<<output_size<<"]"<<std::endl;
 
@@ -180,6 +181,10 @@ void fc_forward(float *in, float *out, float *weights, float *biases, int input_
 		for (int j = 0; j < output_size; j++) {
 			out[j] += in[i] * weights[i * output_size +  j];
 		}
+	}
+
+	for (int i = 0; i < output_size; i++) {
+		out[i] = std::fmax(out[i], 0);
 	}
 }
 
@@ -194,6 +199,9 @@ void fc_softmax_forward(float *in, float *out, float *weights, float *biases, in
 		for (int j = 0; j < output_size; j++) {
 			out[j] += in[i] * weights[i * output_size +  j];
 		}
+	}
+	for (int i = 0; i < output_size; i++) {
+		out[i] = std::fmax(out[i], 0);
 	}
 	for (int i = 0; i < output_size; i++) {
 		out[i] = exp(out[i]);
