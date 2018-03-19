@@ -330,7 +330,20 @@ int main() {
 		cnpy::NpyArray arr8_biases = cnpy::npy_load(weight_dir+"fc8_b.npy");
 		fc3_biases = arr8_biases.data<float>();
 
+
+	/*
+	** tile height and weight index
+	** Then figure out the input index of the tile
+	** Also the output index when the tiling ends
+	*/
+
 	//Group 1
+	int h_num_tiles = ;
+	int w_num_tiles = ;
+
+	Data_conf output13_tiled_conf = {, output13_conf.c};
+
+
 	conv_im2row(input11, output11, conv11_weights,conv11_biases, conv11_conf, input11_conf, output11_conf);
 	conv_im2row(output11, output12, conv12_weights, conv12_biases, conv12_conf, input12_conf, output12_conf);
 	pool_forward(output12, output13, input13_conf, input21_conf,pool1_conf);
